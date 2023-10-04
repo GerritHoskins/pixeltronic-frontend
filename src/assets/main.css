@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Sora';
+  src:
+    url('./fonts/static/Sora-Bold.ttf') format('truetype'),
+    url('./fonts/static/Sora-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  height: -webkit-fill-available;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Sora', sans-serif;
+  height: -webkit-fill-available;
+}
