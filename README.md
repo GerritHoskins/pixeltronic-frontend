@@ -11,5 +11,5 @@ Currently implemented:
 - Firebase
 - Capacitor
 - Vuetify
-- Pinia
+- Pina
 - Nightwatch
