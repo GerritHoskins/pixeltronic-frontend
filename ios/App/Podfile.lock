@@ -1,0 +1,46 @@
+PODS:
+  - AppAuth (1.6.2):
+    - AppAuth/Core (= 1.6.2)
+    - AppAuth/ExternalUserAgent (= 1.6.2)
+  - AppAuth/Core (1.6.2)
+  - AppAuth/ExternalUserAgent (1.6.2):
+    - AppAuth/Core
+  - Capacitor (5.4.1):
+    - CapacitorCordova
+  - CapacitorCordova (5.4.1)
+  - CapacitorDevice (5.0.6):
+    - Capacitor
+  - GerrithoskinsCapacitorTwitterxLogin (0.0.5):
+    - AppAuth
+    - Capacitor
+
+DEPENDENCIES:
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorDevice (from `../../node_modules/@capacitor/device`)"
+  - GerrithoskinsCapacitorTwitterxLogin (from `../../../../capacitor-twitterx-login`)
+
+SPEC REPOS:
+  trunk:
+    - AppAuth
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorDevice:
+    :path: "../../node_modules/@capacitor/device"
+  GerrithoskinsCapacitorTwitterxLogin:
+    :path: "../../../../capacitor-twitterx-login"
+
+SPEC CHECKSUMS:
+  AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
+  Capacitor: 4c0681b47eebeba1f902093d24149cf2f518393e
+  CapacitorCordova: 1222fdd78bfd0d323cc22bf254eed1484fe6c92a
+  CapacitorDevice: 2c968f98a1ec4d22357418c1521e7ddc46c675e6
+  GerrithoskinsCapacitorTwitterxLogin: cdf03e952280c2176ec786ffae2ebc75236bca55
+
+PODFILE CHECKSUM: 32ce67d7dbedafad2a0c82ff8de69d3e9870e7f5
+
+COCOAPODS: 1.12.1
