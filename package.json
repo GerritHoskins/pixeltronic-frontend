@@ -13,7 +13,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "upload": "npm run build && firebase deploy --only hosting",
-    "sync": "cd ../../capacitor-twitterx-login && npm run build && cd ../friendly-spork/pixeltronics && npm i && npm run build && npx cap sync && npx cap copy"
+    "sync": "cd ../capacitor-twitterx-login && npm run build && cd ../pixeltronic-frontend && npm i && npm run build && npx cap sync && npx cap copy"
   },
   "dependencies": {
     "@capacitor/android": "^5.4.1",
@@ -31,7 +31,7 @@
     "vuetify": "^3.3.16"
   },
   "devDependencies": {
-    "@gerrithoskins/capacitor-twitterx-login": "file:../../capacitor-twitterx-login",
+    "@gerrithoskins/capacitor-twitterx-login": "file:../capacitor-twitterx-login",
     "@mdi/font": "^7.2.96",
     "@nightwatch/vue": "0.4.5",
     "@rushstack/eslint-patch": "^1.3.3",

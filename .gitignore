@@ -17,6 +17,11 @@ firebase-debug.*.log*
 # it commented so all members can deploy to the same project(s) in .firebaserc.
 # .firebaserc
 
+# Capacitor app generation files
+/ios
+/android
+capacitor.config.ts
+
 # Runtime data
 pids
 *.pid
