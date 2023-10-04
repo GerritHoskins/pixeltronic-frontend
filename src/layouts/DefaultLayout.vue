@@ -4,7 +4,6 @@
       <v-app-bar-title>
         <div class="!tw-flex !tw-flex-row !tw-items-center">
           <slot name="header" />
-          <!-- <slot name="breadcrumb" /> -->
         </div>
       </v-app-bar-title>
     </v-app-bar>

@@ -64,7 +64,7 @@ const apiRequest = async (url: string, payload: any) => {
     }
     return data;
   } catch (err) {
-    console.log(err?.message);
+    console.error(err);
     return null;
   }
 };
