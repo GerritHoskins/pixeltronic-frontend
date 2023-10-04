@@ -22,6 +22,9 @@ firebase-debug.*.log*
 /android
 capacitor.config.ts
 
+#build folder
+dist/
+
 # Runtime data
 pids
 *.pid
@@ -70,6 +73,5 @@ node_modules/
 # dotenv environment variables file
 .env
 
-#build folder
-dist/
+#ide
 .idea
