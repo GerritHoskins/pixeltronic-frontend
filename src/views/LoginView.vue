@@ -1,19 +1,10 @@
 <template>
-  <v-container class="login-view !tw-font-light">
+  <v-container class="login-view !tw-font-light !tw-max-w-screen-md">
     <v-row>
-      <v-col cols="12" md="6">
+      <v-col cols="12">
         <form @submit.prevent="handleSubmit">
-          <v-text-field
-            v-model="form.username"
-            label="Username"
-            required
-          ></v-text-field>
-          <v-text-field
-            v-model="form.password"
-            label="Password"
-            required
-            type="password"
-          ></v-text-field>
+          <v-text-field v-model="form.username" label="Username" required></v-text-field>
+          <v-text-field v-model="form.password" label="Password" required type="password"></v-text-field>
           <v-text-field
             v-if="registerClicked"
             v-model="confirmationPassword"
@@ -21,12 +12,8 @@
             required
             type="password"
           ></v-text-field>
-          <v-btn color="primary" type="submit"
-            >{{ registerClicked ? "Register" : "Login" }}
-          </v-btn>
-          <div class="tw-cursor-pointer tw-mt-4" @click="onRegisterClick">
-            Don't have an accout? Register
-          </div>
+          <v-btn color="primary" type="submit">{{ registerClicked ? 'Register' : 'Login' }} </v-btn>
+          <div class="tw-cursor-pointer tw-mt-4" @click="onRegisterClick">Don't have an accout? Register</div>
           <v-alert v-if="error">{{ errorMessage }}</v-alert>
         </form>
       </v-col>
@@ -35,31 +22,31 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
+import { reactive, ref } from 'vue';
 
 const form = reactive({
-  username: "",
-  password: "",
+  username: '',
+  password: '',
 });
 
 const registerClicked = ref(false);
-const confirmationPassword = ref("");
+const confirmationPassword = ref('');
 const error = ref(false);
-const errorMessage = ref("");
+const errorMessage = ref('');
 
 const onRegisterClick = () => (registerClicked.value = true);
 
 const apiRequest = async (url: string, payload: any) => {
   try {
     const res = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(payload),
-      headers: { "Content-Type": "application/json" },
+      headers: { 'Content-Type': 'application/json' },
     });
     const data = await res.json();
     if (res.status === 400 || res.status === 401) {
       error.value = true;
-      errorMessage.value = `${data.message}. ${data.error ? data.error : ""}`;
+      errorMessage.value = `${data.message}. ${data.error ? data.error : ''}`;
       return null;
     }
     return data;
@@ -71,21 +58,19 @@ const apiRequest = async (url: string, payload: any) => {
 
 const handleLoginOrRegister = async () => {
   const url = registerClicked.value
-    ? "https://pixeltronic.info/api/auth/register"
-    : "https://pixeltronic.info/api/auth/login";
+    ? 'https://pixeltronic.info/api/auth/register'
+    : 'https://pixeltronic.info/api/auth/login';
   const data = await apiRequest(url, form);
 
   if (data) {
-    data.role === "admin"
-      ? location.assign("/admin")
-      : location.assign("/home");
+    data.role === 'admin' ? location.assign('/admin') : location.assign('/home');
   }
 };
 
 const handleSubmit = async () => {
   if (registerClicked.value && form.password !== confirmationPassword.value) {
     error.value = true;
-    errorMessage.value = "Passwords do not match.";
+    errorMessage.value = 'Passwords do not match.';
     return;
   }
   await handleLoginOrRegister();

@@ -17,10 +17,8 @@
           </page-transition>
         </router-view>
       </template>
-      <template #footer>
-        <footer-component />
-      </template>
     </component>
+    <footer-component />
   </v-app>
 </template>
 
