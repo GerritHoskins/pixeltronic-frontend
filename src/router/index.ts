@@ -1,18 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import { useAuthStore } from '../stores/auth';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      redirect: () => '/login',
+      redirect: () => '/home',
     },
     {
       path: '/home',
       name: 'home',
       meta: { layout: 'CenteredLayout', title: 'Home' },
       component: HomeView,
+      beforeEnter: (to, from, next) => {
+        const authStore = useAuthStore();
+
+        if (!authStore.user) next('/login');
+        else next();
+      },
     },
     {
       path: '/admin',

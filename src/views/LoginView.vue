@@ -23,6 +23,8 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 
 const form = reactive({
   username: '',
@@ -36,35 +38,17 @@ const errorMessage = ref('');
 
 const onRegisterClick = () => (registerClicked.value = true);
 
-const apiRequest = async (url: string, payload: any) => {
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await res.json();
-    if (res.status === 400 || res.status === 401) {
-      error.value = true;
-      errorMessage.value = `${data.message}. ${data.error ? data.error : ''}`;
-      return null;
-    }
-    return data;
-  } catch (err) {
-    console.error(err);
-    return null;
-  }
-};
+const authStore = useAuthStore();
 
+const router = useRouter();
 const handleLoginOrRegister = async () => {
-  const url = registerClicked.value
-    ? 'https://pixeltronic.info/api/auth/register'
-    : 'https://pixeltronic.info/api/auth/login';
-  const data = await apiRequest(url, form);
-
-  if (data) {
-    data.role === 'admin' ? location.assign('/admin') : location.assign('/home');
+  if (registerClicked.value) {
+    await authStore.register({ username: form.username, password: form.password });
+  } else {
+    await authStore.login({ username: form.username, password: form.password });
   }
+
+  await router.push({ name: 'home' });
 };
 
 const handleSubmit = async () => {

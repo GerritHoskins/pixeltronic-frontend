@@ -1,16 +1,16 @@
-import './assets/main.css'
-import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
+import './assets/main.css';
+import '@mdi/font/css/materialdesignicons.css'; // Ensure you are using css-loader
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue';
 
-import colors from '../tailwind.config'
+import colors from '../tailwind.config';
 
-import App from './App.vue'
-import router from './router'
+import App from './App.vue';
+import router from './router';
 // Vuetify
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import { pinia } from './stores';
 
 const pixeltronicTheme = {
   dark: false,
@@ -25,9 +25,9 @@ const pixeltronicTheme = {
     error: '#B00020',
     info: '#2196F3',
     success: '#4CAF50',
-    warning: '#FB8C00'
-  }
-}
+    warning: '#FB8C00',
+  },
+};
 
 const vuetify = createVuetify({
   defaults: {
@@ -35,21 +35,21 @@ const vuetify = createVuetify({
     VCard: { variant: 'text', color: 'text' },
     global: {
       ripple: true,
-      elevation: 0
-    }
+      elevation: 0,
+    },
   },
   theme: {
     defaultTheme: 'pixeltronicTheme',
     themes: {
-      pixeltronicTheme
-    }
-  }
-})
+      pixeltronicTheme,
+    },
+  },
+});
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(vuetify)
-app.use(createPinia())
-app.use(router)
+app.use(vuetify);
+app.use(pinia);
+app.use(router);
 
-app.mount('#app')
+app.mount('#app');
