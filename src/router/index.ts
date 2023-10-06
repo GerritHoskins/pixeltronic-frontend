@@ -36,7 +36,7 @@ const router = createRouter({
     {
       path: '/projects',
       name: 'projects',
-      meta: { layout: 'CenteredLayout', title: 'Projets' },
+      meta: { layout: 'CenteredLayout', title: 'Projects' },
       component: () => import('../views/ProjectsView.vue'),
     },
     {
