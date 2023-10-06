@@ -24,28 +24,28 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps<{
-  smAndUp: boolean
-}>()
+  smAndUp: boolean;
+}>();
 
 type MenuOptions = {
-  location: string
-  offset: string
-  transition: string
-}
+  location: string;
+  offset: string;
+  transition: string;
+};
 
 const menuOptions = computed<MenuOptions>(() => ({
   location: props.smAndUp ? 'end' : 'bottom',
   offset: props.smAndUp ? '20' : '8',
-  transition: props.smAndUp ? 'fab-transition' : 'slide-y-transition'
-}))
+  transition: props.smAndUp ? 'fab-transition' : 'slide-y-transition',
+}));
 
 const items = [
   { title: 'Home', to: 'home' },
   { title: 'About', to: 'about' },
   { title: 'Login', to: 'login' },
-  { title: 'Projects', to: 'projects' }
-]
+  { title: 'Projects', to: 'projects' },
+];
 </script>

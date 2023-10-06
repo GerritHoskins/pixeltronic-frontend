@@ -26,7 +26,7 @@
           <v-file-input
             label="Upload Image"
             v-model="image"
-            required
+            accept="image/*"
             outlined
             name="image"
             :rules="[rules.required]"
@@ -45,10 +45,10 @@ import { useProjectStore } from '../stores/project';
 
 const name = ref('');
 const description = ref('');
-const image = ref(null);
+const image = ref<File[] | undefined>();
 
 const rules = {
-  required: (value: string | File) => !!value || 'This field is required.',
+  required: (value: string | File[]) => !!value || 'This field is required.',
 };
 
 const isValid = computed(() => {

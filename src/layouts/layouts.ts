@@ -1,4 +1,4 @@
-import CenteredLayout from './CenteredLayout.vue'
-import DefaultLayout from './DefaultLayout.vue'
+import CenteredLayout from './CenteredLayout.vue';
+import DefaultLayout from './DefaultLayout.vue';
 
-export default { CenteredLayout, DefaultLayout } as Record<string, any>
+export default { CenteredLayout, DefaultLayout } as Record<string, any>;

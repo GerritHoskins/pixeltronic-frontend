@@ -9,5 +9,5 @@
 </template>
 
 <script lang="ts" setup>
-defineProps<{ currentPage: string }>()
+defineProps<{ currentPage: string }>();
 </script>

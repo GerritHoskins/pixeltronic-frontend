@@ -8,7 +8,7 @@ export type ProjectGetRequestParams = {
 export type ProjectAddRequestParams = {
   name: string;
   desc: string;
-  img: string | null;
+  img?: File[];
 };
 
 export const useProjectStore = defineStore({

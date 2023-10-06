@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref } from 'vue';
 
-const order = ref("0");
+const order = ref('0');
 </script>
