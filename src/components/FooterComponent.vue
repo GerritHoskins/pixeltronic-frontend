@@ -1,6 +1,28 @@
 <template>
   <v-footer color="background" class="tw-flex tw-flex-col !tw-text-xs !tw-font-light !tw-w-full !tw-p-0" app>
-    <div class="tw-flex tw-flex-row">
+    <v-list
+      class="tw-flex tw-flex-col tw-items-center sm:tw-flex-row"
+      bg-color="background"
+      density="compact"
+      variant="plain"
+    >
+      <v-list-item
+        min-height="20"
+        v-for="footerLink in footerLinks"
+        :key="footerLink.title"
+        :aria-label="footerLink.title"
+        link
+        class="!tw-font-light"
+        variant="plain"
+        :to="footerLink.to"
+      >
+        {{ footerLink.title }}
+      </v-list-item>
+      <v-list-item min-height="20" variant="plain" class="!tw-color-text">{{
+        `${new Date().getFullYear()} — pixeltronic.dev`
+      }}</v-list-item>
+    </v-list>
+    <div class="tw-flex tw-flex-row pb-2">
       <a v-for="socialLink in socialLinks" :key="socialLink.title" :href="socialLink.url" target="_blank">
         <v-icon
           class="mx-4"
@@ -15,26 +37,13 @@
         </v-icon>
       </a>
     </div>
-
-    <v-list class="!tw-flex !tw-flex-row" bg-color="background" density="compact" variant="text">
-      <v-list-item
-        v-for="footerLink in footerLinks"
-        :key="footerLink.title"
-        :aria-label="footerLink.title"
-        link
-        :ripple="false"
-        class="!tw-font-light"
-        variant="plain"
-        density="compact"
-        :to="footerLink.to"
-      >
-        {{ footerLink.title }}
-      </v-list-item>
-    </v-list>
   </v-footer>
 </template>
 
 <script setup lang="ts">
+import { useDisplay } from 'vuetify';
+
+const { smAndUp } = useDisplay();
 const socialLinks = [
   {
     title: 'LinkedIn',
@@ -61,10 +70,5 @@ const footerLinks = [
     title: 'Terms and conditions',
     to: 'terms-of-use',
   },
-  {
-    title: `${new Date().getFullYear()} — pixeltronic.dev`,
-    to: 'home',
-  },
 ];
-const openLink = (url: string) => window.open(url, '_blank');
 </script>

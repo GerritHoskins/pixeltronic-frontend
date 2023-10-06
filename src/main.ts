@@ -34,7 +34,7 @@ const vuetify = createVuetify({
     VBtn: { variant: 'elevated', density: 'comfortable', elevation: 1 },
     VCard: { variant: 'text', color: 'text' },
     global: {
-      ripple: true,
+      ripple: false,
       elevation: 0,
     },
   },

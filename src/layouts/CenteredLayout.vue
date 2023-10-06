@@ -13,8 +13,19 @@
       </v-app-bar-title>
     </v-app-bar>
 
-    <v-navigation-drawer permanent floating color="background" :location="smAndUp ? 'left' : 'top'">
-      <v-list class="tw-flex tw-flex-col">
+    <v-navigation-drawer
+      v-model="showDrawer"
+      permanent
+      floating
+      color="background"
+      :location="smAndUp ? 'left' : 'bottom'"
+    >
+      <v-list
+        class="tw-flex !tw-flex-col tw-items-center sm:tw-items-start"
+        bg-color="background"
+        density="compact"
+        variant="plain"
+      >
         <v-hover>
           <template v-slot:default="{ isHovering, props }">
             <v-list-item
@@ -23,7 +34,6 @@
               :color="isHovering ? 'text' : 'primary'"
               active-class="!tw-font-bold"
               variant="plain"
-              :ripple="false"
               link
               v-for="(item, index) in items"
               :key="index"
@@ -44,10 +54,14 @@
 
 <script setup lang="ts">
 import { useDisplay } from 'vuetify';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const { smAndUp } = useDisplay();
 const showDrawer = ref(false);
+
+onMounted(() => {
+  showDrawer.value = smAndUp.value;
+});
 
 const toggleDrawer = () => {
   showDrawer.value = !showDrawer.value;
@@ -57,7 +71,7 @@ const items = [
   { title: 'Home', to: 'home' },
   { title: 'About', to: 'about' },
   { title: 'Projects', to: 'projects' },
-  { title: 'Login', to: 'login' },
+  { title: 'Logout', to: 'login' },
 ];
 </script>
 
