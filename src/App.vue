@@ -18,6 +18,7 @@
         </router-view>
       </template>
     </component>
+
     <footer-component />
   </v-app>
 </template>
@@ -28,12 +29,12 @@ import './assets/main.css';
 import { onBeforeMount, provide, ref, shallowRef } from 'vue';
 import layouts from './layouts/layouts';
 import PageTransition from './layouts/transitions/PageTransition.vue';
-import FooterComponent from './components/FooterComponent.vue';
-import TitleBar from './components/TitleBar.vue';
-import NavigationDrawer from './components/NavigationDrawer.vue';
-import BreadCrumb from './components/BreadCrumb.vue';
+import TitleBar from './components/common/TitleBar.vue';
+import NavigationDrawer from './components/common/NavigationDrawer.vue';
+import BreadCrumb from './components/common/BreadCrumb.vue';
 
 import { useDisplay } from 'vuetify';
+import FooterComponent from '@/components/common/FooterComponent.vue';
 
 const { smAndUp } = useDisplay();
 const layout = shallowRef('div');

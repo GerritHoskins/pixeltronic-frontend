@@ -1,39 +1,13 @@
 <template>
-  <v-container class="projects-view !tw-font-light">
+  <v-container class="projects-view !tw-font-light !tw-p-0">
     <v-row>
-      <v-col cols="12">
-        <form action="/" method="POST" enctype="multipart/form-data" @submit.prevent="handleSubmit">
-          <v-text-field
-            label="Image Title"
-            v-model="name"
-            required
-            outlined
-            placeholder="Name"
-            name="name"
-            :rules="[rules.required]"
-          ></v-text-field>
-
-          <v-textarea
-            label="Image Description"
-            v-model="description"
-            required
-            outlined
-            placeholder="Description"
-            name="desc"
-            :rules="[rules.required]"
-          ></v-textarea>
-
-          <v-file-input
-            label="Upload Image"
-            v-model="image"
-            accept="image/*"
-            outlined
-            name="image"
-            :rules="[rules.required]"
-          ></v-file-input>
-
-          <v-btn type="submit" color="primary" :disabled="!isValid">Submit</v-btn>
-        </form>
+      <v-col cols="8">
+        <router-view />
+      </v-col>
+      <v-col cols="4">
+        <v-btn color="primary" :to="{ name: 'add-project' }">
+          <span>Add project</span>
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -41,7 +15,9 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import { useProjectStore } from '../stores/project';
+import { useProjectStore } from '../store/project';
+import ProjectList from '@/components/project/ProjectList.vue';
+import AddNewProject from '@/components/project/AddNewProject.vue';
 
 const name = ref('');
 const description = ref('');
@@ -51,9 +27,13 @@ const rules = {
   required: (value: string | File[]) => !!value || 'This field is required.',
 };
 
+const addProject = ref(false);
+
 const isValid = computed(() => {
   return name.value && description.value && image.value;
 });
+
+const toggleAddProject = () => (addProject.value = true);
 
 const projectStore = useProjectStore();
 const handleSubmit = async () => {

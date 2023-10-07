@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="background" class="tw-flex tw-flex-col !tw-text-xs !tw-font-light !tw-w-full !tw-p-0" app>
+  <v-footer absolute color="background" class="tw-flex tw-flex-col !tw-text-xs !tw-font-light !tw-w-full !tw-p-0">
     <v-list
       class="tw-flex tw-flex-col tw-items-center sm:tw-flex-row"
       bg-color="background"

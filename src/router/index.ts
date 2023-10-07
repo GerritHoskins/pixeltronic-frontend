@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import { useAuthStore } from '../stores/auth';
+import { useAuthStore } from '../store/auth';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +38,26 @@ const router = createRouter({
       name: 'projects',
       meta: { layout: 'CenteredLayout', title: 'Projects' },
       component: () => import('../views/ProjectsView.vue'),
+      children: [
+        {
+          path: ':id',
+          name: 'project',
+          meta: { layout: 'CenteredLayout', title: 'Project' },
+          component: () => import('../components/project/ProjectDetail.vue'),
+        },
+        {
+          path: 'add',
+          name: 'add-project',
+          meta: { layout: 'CenteredLayout', title: 'Add Project' },
+          component: () => import('../components/project/AddNewProject.vue'),
+        },
+        {
+          path: 'list',
+          name: 'project-list',
+          meta: { layout: 'CenteredLayout', title: 'All Projects' },
+          component: () => import('../components/project/ProjectList.vue'),
+        },
+      ],
     },
     {
       path: '/login',

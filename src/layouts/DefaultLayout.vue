@@ -8,15 +8,9 @@
       </v-app-bar-title>
     </v-app-bar>
 
-    <v-main class="!tw-text-sm" color="background">
+    <v-main class="!tw-text-sm !tw-min-h-screen" color="background">
       <slot name="main" />
     </v-main>
     <slot name="footer" />
   </v-layout>
 </template>
-
-<script lang="ts" setup>
-import { ref } from 'vue';
-
-const order = ref('0');
-</script>

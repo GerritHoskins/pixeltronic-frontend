@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../stores/auth';
+import { useAuthStore } from '../store/auth';
 
 const form = reactive({
   username: '',

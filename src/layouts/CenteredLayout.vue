@@ -46,7 +46,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main color="background" class="!tw-text-sm">
+    <v-main color="background" class="!tw-text-sm !tw-min-h-[calc(100vh -70px)]">
       <slot name="main" />
     </v-main>
   </v-layout>
@@ -55,7 +55,6 @@
 <script setup lang="ts">
 import { useDisplay } from 'vuetify';
 import { onMounted, ref } from 'vue';
-
 const { smAndUp } = useDisplay();
 const showDrawer = ref(false);
 
@@ -70,7 +69,7 @@ const toggleDrawer = () => {
 const items = [
   { title: 'Home', to: 'home' },
   { title: 'About', to: 'about' },
-  { title: 'Projects', to: 'projects' },
+  { title: 'Projects', to: 'project-list' },
   { title: 'Logout', to: 'login' },
 ];
 </script>
