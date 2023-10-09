@@ -38,3 +38,5 @@ yarn-error.log*
 /.editorconfig
 /.firebaserc
 /.npmrc
+/.vscode/
+/.firebase/hosting.ZGlzdA.cache
