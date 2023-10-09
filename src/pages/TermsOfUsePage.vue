@@ -1,12 +1,15 @@
 <template>
   <q-page padding>
-    <!-- content -->
+    <div class="q-pa-md">
+      <h1>
+        {{ pageTitle }}
+      </h1>
+    </div>
   </q-page>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-export default defineComponent({
-  // name: 'PageName'
-})
+<script setup lang="ts">
+defineProps<{
+  pageTitle: string;
+}>();
 </script>

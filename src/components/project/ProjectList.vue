@@ -1,15 +1,15 @@
 <template>
-  <div class="q-pa-md col items-start q-gutter-md">
+  <div class="col items-start q-gutter-md q-pt-sm">
     <q-card
       v-for="project in projects"
       :key="project.name"
       dark
       bordered
-      class="bg-grey-3 text-grey-8"
+      class="text-accent bg-secondary"
     >
       <q-card-section avatar>
         <q-avatar>
-          <img :src="project.img" />
+          <img :src="project.img" :alt="project.name" />
         </q-avatar>
       </q-card-section>
 

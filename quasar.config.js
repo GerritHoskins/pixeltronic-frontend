@@ -96,9 +96,9 @@ module.exports = configure(function (ctx) {
           backButton: true,
         },
         brand: {
-          primary: '#384042',
-          secondary: '#d4f5f5',
-          accent: '#93b7be',
+          primary: '#35869c',
+          secondary: '#f1f9fa',
+          accent: '#162b36',
 
           dark: '#93b7be',
           'dark-page': '#121111',

@@ -3,14 +3,22 @@ import { useAuthStore } from 'stores/auth';
 
 const childRoutesWithAuthentication = [
   {
-    path: '/blog',
+    path: '',
     name: 'blog',
-    meta: { layout: 'AuthenticatedLayout', title: 'Blog' },
+    meta: {
+      layout: 'AuthenticatedLayout',
+      title: 'Blog',
+      contentTitle: 'Interesting reads',
+    },
     component: () => import('../pages/BlogPage.vue'),
   },
   {
     path: '/projects',
-    meta: { layout: 'AuthenticatedLayout', title: 'Projects' },
+    meta: {
+      layout: 'AuthenticatedLayout',
+      title: 'Projects',
+      contentTitle: "Things I've built",
+    },
     component: () => import('../pages/ProjectPage.vue'),
     children: [
       {
@@ -37,9 +45,13 @@ const childRoutesWithAuthentication = [
 
 const childRoutesWithoutAuthentication = [
   {
-    path: '/login',
+    path: '',
     name: 'login',
-    meta: { layout: 'AuthenticatedLayout', title: 'Login' },
+    meta: {
+      layout: 'DefaultLayout',
+      title: 'Login',
+      contentTitle: 'Logout',
+    },
     component: () => import('../pages/LoginPage.vue'),
   },
 ];
@@ -48,15 +60,27 @@ const childRoutesNoRequirements = [
   {
     path: '/privacy-policy',
     name: 'privacy-policy',
-    meta: { layout: 'DefaultLayout', title: 'Privacy policy' },
+    meta: {
+      layout: 'AuthenticatedLayout',
+      title: 'Privacy policy',
+    },
     component: () => import('../pages/PrivacyPolicyPage.vue'),
   },
   {
     path: '/terms-of-use',
     name: 'terms-of-use',
-    meta: { layout: 'DefaultLayout', title: 'Terms of use' },
+    meta: {
+      layout: 'AuthenticatedLayout',
+      title: 'Terms of use',
+    },
     component: () => import('../pages/TermsOfUsePage.vue'),
   },
+];
+
+export const allNavigationRoutes = [
+  ...childRoutesWithAuthentication,
+  ...childRoutesWithoutAuthentication,
+  ...childRoutesNoRequirements,
 ];
 
 const routes: RouteRecordRaw[] = [
@@ -65,29 +89,23 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../layouts/DefaultLayout.vue'),
     beforeEnter: (to, from, next) => {
       const authStore = useAuthStore();
-      if (!authStore.user) next('/login');
-      else next('/blog');
+      if (!authStore.user.id) next({ name: 'login' });
+      else next({ name: 'blog' });
     },
   },
   {
-    path: '',
+    path: '/blog',
     component: () => import('../layouts/AuthenticatedLayout.vue'),
     children: [...childRoutesWithAuthentication, ...childRoutesNoRequirements],
   },
   {
-    path: '',
+    path: '/login',
     component: () => import('../layouts/DefaultLayout.vue'),
-    children: [
-      ...childRoutesWithoutAuthentication,
-      ...childRoutesNoRequirements,
-    ],
+    children: [...childRoutesWithoutAuthentication],
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('../pages/ErrorNotFoundPage.vue'),
+    component: () => import('../pages/Error404Page.vue'),
   },
 ];
 

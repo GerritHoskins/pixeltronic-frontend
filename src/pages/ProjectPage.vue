@@ -1,10 +1,16 @@
 <template>
-  <router-view />
+  <q-page padding>
+    <div class="q-pa-md">
+      <h1>
+        {{ pageTitle }}
+      </h1>
+      <router-view />
+    </div>
+  </q-page>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-export default defineComponent({
-  // name: 'PageName'
-});
+<script setup lang="ts">
+defineProps<{
+  pageTitle: string;
+}>();
 </script>

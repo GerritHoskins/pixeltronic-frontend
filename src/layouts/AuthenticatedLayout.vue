@@ -18,27 +18,22 @@
         narrow-indicator
         no-caps
         active-color="primary"
-        indicator-color="transparent"
+        indicator-color="primary"
         class="text-grey-8"
         v-model="tab"
       >
-        <q-route-tab :ripple="false" :to="{ name: 'blog' }">
-          Interesting reads
-        </q-route-tab>
-        <q-route-tab :ripple="false" :to="{ name: 'projects' }">
-          Things I've built
-        </q-route-tab>
-        <q-route-tab :ripple="false" :to="{ name: 'privacy-policy' }">
-          Privacy policy
-        </q-route-tab>
-        <q-route-tab :ripple="false" :to="{ name: 'terms-of-use' }">
-          Terms of use
-        </q-route-tab>
+        <q-route-tab
+          v-for="tab in tabs"
+          :key="tab.to.path"
+          :to="tab.to"
+          :label="tab.label"
+          :ripple="false"
+        />
       </q-tabs>
     </q-footer>
 
     <q-page-container>
-      <router-view />
+      <router-view :page-title="pageTitle" />
     </q-page-container>
   </q-layout>
 </template>
@@ -50,6 +45,25 @@
 }
 </style>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { allNavigationRoutes } from 'src/router/routes';
+
 const tab = ref('');
+const tabs = computed(() => {
+  return allNavigationRoutes.flatMap((route) => {
+    return {
+      to: route,
+      label: route.meta?.contentTitle || route.meta.title || route.name,
+    };
+  });
+});
+
+const router = useRouter();
+const pageTitle = computed(() => {
+  return (
+    router.currentRoute.value.meta?.contentTitle ||
+    router.currentRoute.value.meta?.title
+  );
+});
 </script>

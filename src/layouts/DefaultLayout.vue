@@ -14,11 +14,16 @@
 
     <q-footer bordered class="bg-grey-3">
       <q-tabs
+        switch-indicator
+        narrow-indicator
         no-caps
         active-color="primary"
-        indicator-color="transparent"
+        indicator-color="primary"
         class="text-grey-8"
       >
+        <q-route-tab :ripple="false" :to="{ name: 'login' }">
+          Login
+        </q-route-tab>
         <q-route-tab :ripple="false" :to="{ name: 'privacy-policy' }">
           Privacy policy
         </q-route-tab>
