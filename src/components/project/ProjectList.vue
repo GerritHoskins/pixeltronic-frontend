@@ -5,7 +5,7 @@
       :key="project.name"
       dark
       bordered
-      class="text-accent bg-secondary"
+      class="text-black bg-secondary"
     >
       <q-card-section avatar>
         <q-avatar>

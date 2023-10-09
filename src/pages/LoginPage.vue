@@ -119,6 +119,7 @@ const handleLoginOrRegister = async () => {
     throw error;
   }
 };
+
 const $q = useQuasar();
 const handleSubmit = async () => {
   if (registerClicked.value && form.password !== confirmationPassword.value) {
