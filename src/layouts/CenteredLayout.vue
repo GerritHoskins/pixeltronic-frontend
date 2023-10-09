@@ -13,13 +13,7 @@
       </v-app-bar-title>
     </v-app-bar>
 
-    <v-navigation-drawer
-      v-model="showDrawer"
-      permanent
-      floating
-      color="background"
-      :location="smAndUp ? 'left' : 'bottom'"
-    >
+    <v-navigation-drawer v-model="showDrawer" permanent floating color="background" location="bottom">
       <v-list
         class="tw-flex !tw-flex-col tw-items-center sm:tw-items-start"
         bg-color="background"
@@ -53,14 +47,8 @@
 </template>
 
 <script setup lang="ts">
-import { useDisplay } from 'vuetify';
-import { onMounted, ref } from 'vue';
-const { smAndUp } = useDisplay();
+import { ref } from 'vue';
 const showDrawer = ref(false);
-
-onMounted(() => {
-  showDrawer.value = smAndUp.value;
-});
 
 const toggleDrawer = () => {
   showDrawer.value = !showDrawer.value;

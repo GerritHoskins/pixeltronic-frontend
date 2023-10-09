@@ -25,6 +25,8 @@ capacitor.config.ts
 #build folder
 dist/
 
+/public/FaceTecSDK.js
+
 # Runtime data
 pids
 *.pid

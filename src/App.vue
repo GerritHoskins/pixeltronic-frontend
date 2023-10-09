@@ -4,8 +4,8 @@
       <template #header>
         <title-bar />
       </template>
-      <template #navigation="{ smAndUp }">
-        <navigation-drawer :sm-and-up="smAndUp" />
+      <template #navigation>
+        <navigation-drawer />
       </template>
       <template #breadcrumb>
         <bread-crumb :current-page="currentPage" />
@@ -33,10 +33,8 @@ import TitleBar from './components/common/TitleBar.vue';
 import NavigationDrawer from './components/common/NavigationDrawer.vue';
 import BreadCrumb from './components/common/BreadCrumb.vue';
 
-import { useDisplay } from 'vuetify';
-import FooterComponent from '@/components/common/FooterComponent.vue';
+import FooterComponent from './components/common/FooterComponent.vue';
 
-const { smAndUp } = useDisplay();
 const layout = shallowRef('div');
 const currentPage = ref('home');
 const backgroundColor = ref('');

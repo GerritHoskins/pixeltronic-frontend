@@ -3,8 +3,6 @@ import '@mdi/font/css/materialdesignicons.css'; // Ensure you are using css-load
 
 import { createApp } from 'vue';
 
-import colors from '../tailwind.config';
-
 import App from './App.vue';
 import router from './router';
 import { pinia } from './store';

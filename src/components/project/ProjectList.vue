@@ -16,30 +16,10 @@
 import { computed, onMounted } from 'vue';
 import { useProjectStore } from '../../store/project';
 
-type ListItem = {
-  type?: 'subheader';
-  title: string;
-  prependAvatar?: string;
-  subtitle?: string;
-};
-
 const projectStore = useProjectStore();
 
 onMounted(async () => {
   await projectStore.all();
 });
 const projects = computed(() => projectStore.projectList);
-const projectList = computed<Array<ListItem>>(() => {
-  return projectStore.projectList.flatMap((project): ListItem[] => [
-    {
-      type: 'subheader',
-      title: project.name,
-    },
-    {
-      prependAvatar: project.img as unknown as string,
-      title: project.name,
-      subtitle: project.desc,
-    },
-  ]);
-});
 </script>
