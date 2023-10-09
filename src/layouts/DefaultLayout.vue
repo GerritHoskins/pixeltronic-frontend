@@ -1,16 +1,43 @@
 <template>
-  <v-layout id="safeArea">
-    <v-app-bar :elevation="1" border="false" color="primary" density="compact">
-      <v-app-bar-title>
-        <div class="!tw-flex !tw-flex-row !tw-items-center">
-          <slot name="header" />
-        </div>
-      </v-app-bar-title>
-    </v-app-bar>
+  <q-layout
+    id="safeArea"
+    view="lHh lpr lFf"
+    container
+    style="min-height: 100vh"
+    class="default-layout shadow-2 rounded-borders"
+  >
+    <q-header bordered class="bg-grey-3 text-grey-8">
+      <q-toolbar>
+        <q-toolbar-title class="text-center"> pixeltronic.dev </q-toolbar-title>
+      </q-toolbar>
+    </q-header>
 
-    <v-main class="!tw-text-sm !tw-min-h-screen" color="background">
-      <slot name="main" />
-    </v-main>
-    <slot name="footer" />
-  </v-layout>
+    <q-footer bordered class="bg-grey-3">
+      <q-tabs
+        no-caps
+        active-color="primary"
+        indicator-color="transparent"
+        class="text-grey-8"
+      >
+        <q-route-tab :ripple="false" :to="{ name: 'privacy-policy' }">
+          Privacy policy
+        </q-route-tab>
+        <q-route-tab :ripple="false" :to="{ name: 'terms-of-use' }">
+          Terms of use
+        </q-route-tab>
+      </q-tabs>
+    </q-footer>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
 </template>
+
+<style scoped>
+#safeArea {
+  margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+    env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px) !important;
+}
+</style>
+<script setup lang="ts"></script>

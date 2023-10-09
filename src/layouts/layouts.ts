@@ -1,4 +1,8 @@
-import CenteredLayout from './CenteredLayout.vue';
 import DefaultLayout from './DefaultLayout.vue';
+import AuthenticatedLayout from './AuthenticatedLayout.vue';
+import MainLayout from 'layouts/MainLayout.vue';
 
-export default { CenteredLayout, DefaultLayout } as Record<string, unknown>;
+export default { DefaultLayout, AuthenticatedLayout, MainLayout } as Record<
+  string,
+  unknown
+>;

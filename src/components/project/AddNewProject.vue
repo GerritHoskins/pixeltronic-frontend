@@ -1,36 +1,46 @@
 <template>
-  <div class="add-new-project">
-    <form action="/" method="POST" enctype="multipart/form-data" @submit.prevent="handleSubmit">
-      <v-text-field
-        label="Image Title"
-        v-model="name"
-        required
-        outlined
-        placeholder="Name"
-        name="name"
-        :rules="[rules.required]"
-      ></v-text-field>
+  <q-form
+    action="/"
+    method="POST"
+    class="add-new-project"
+    enctype="multipart/form-data"
+    @submit.prevent="handleSubmit"
+  >
+    <q-input
+      label="Image Title"
+      v-model="name"
+      required
+      outlined
+      placeholder="Name"
+      name="name"
+      :rules="[rules.required]"
+    ></q-input>
 
-      <v-textarea
-        label="Image Description"
-        v-model="description"
-        required
-        outlined
-        placeholder="Description"
-        name="desc"
-        :rules="[rules.required]"
-      ></v-textarea>
+    <q-input
+      label="Image Description"
+      v-model="description"
+      required
+      outlined
+      placeholder="Description"
+      name="desc"
+      :rules="[rules.required]"
+    ></q-input>
 
-      <v-file-input label="Upload Image" v-model="image" accept="image/*" outlined name="image"></v-file-input>
+    <q-input
+      label="Upload Image"
+      v-model="image"
+      accept="image/*"
+      outlined
+      name="image"
+    ></q-input>
 
-      <v-btn type="submit" color="primary" :disabled="!isValid">Submit</v-btn>
-    </form>
-  </div>
+    <q-btn type="submit" color="primary" :disabled="!isValid">Submit</q-btn>
+  </q-form>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useProjectStore } from '../../store/project';
+import { useProjectStore } from '../../stores/project';
 import { useRouter } from 'vue-router';
 
 const name = ref('');
@@ -49,7 +59,11 @@ const projectStore = useProjectStore();
 const router = useRouter();
 const handleSubmit = async () => {
   if (isValid.value) {
-    await projectStore.add({ name: name.value, desc: description.value, img: image.value });
+    await projectStore.add({
+      name: name.value,
+      desc: description.value,
+      img: image.value,
+    });
     await router.push({ name: 'project-list' });
   }
 };

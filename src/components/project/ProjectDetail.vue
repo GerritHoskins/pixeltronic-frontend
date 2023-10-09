@@ -1,7 +1,7 @@
 <template>
-  <v-card>
+  <q-card>
     {{ router.currentRoute.value.params.id }}
-  </v-card>
+  </q-card>
 </template>
 
 <script setup lang="ts">

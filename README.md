@@ -1,15 +1,41 @@
-# pixeltronic-frontend
+# pixeltronic (pixeltronic-frontend)
 
-Personal playground project for learning and experimenting with various technologies.
-Part of the pixeltronic domain. (check out the backend here: https://github.com/GerritHoskins/pixeltronic-backend)
+pixeltronic frontend
 
-Currently implemented:
-- Vue3
-- Vite
-- TailwindCSS
-- Typescript
-- Firebase
-- Capacitor
-- Vuetify
-- Pina
-- Nightwatch
+## Install the dependencies
+```bash
+yarn
+# or
+npm install
+```
+
+### Start the app in development mode (hot-code reloading, error reporting, etc.)
+```bash
+quasar dev
+```
+
+
+### Lint the files
+```bash
+yarn lint
+# or
+npm run lint
+```
+
+
+### Format the files
+```bash
+yarn format
+# or
+npm run format
+```
+
+
+
+### Build the app for production
+```bash
+quasar build
+```
+
+### Customize the configuration
+See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).

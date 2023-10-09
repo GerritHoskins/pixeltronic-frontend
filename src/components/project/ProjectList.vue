@@ -1,21 +1,35 @@
 <template>
-  <v-list class="project-list" lines="two" bg-color="background">
-    <v-list-item
-      min-height="80"
+  <div class="q-pa-md col items-start q-gutter-md">
+    <q-card
       v-for="project in projects"
       :key="project.name"
-      :title="project.name"
-      :subtitle="project.desc"
-      :prepend-avatar="project.img"
-      :to="{ name: 'project', params: { id: project.name } }"
-    ></v-list-item>
-  </v-list>
+      dark
+      bordered
+      class="bg-grey-3 text-grey-8"
+    >
+      <q-card-section avatar>
+        <q-avatar>
+          <img :src="project.img" />
+        </q-avatar>
+      </q-card-section>
+
+      <q-card-section>
+        <div class="text-h6">{{ project.name }}</div>
+        <div class="text-subtitle2">by John Doe</div>
+      </q-card-section>
+
+      <q-separator dark inset />
+
+      <q-card-section>
+        {{ project.desc }}
+      </q-card-section>
+    </q-card>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { useProjectStore } from '../../store/project';
-
+import { useProjectStore } from '../../stores/project';
 const projectStore = useProjectStore();
 
 onMounted(async () => {

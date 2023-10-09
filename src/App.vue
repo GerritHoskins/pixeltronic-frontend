@@ -1,48 +1,19 @@
 <template>
-  <v-app full-height class="tw-w-full" :class="backgroundColor">
-    <component :is="layout">
-      <template #header>
-        <title-bar />
-      </template>
-      <template #navigation>
-        <navigation-drawer />
-      </template>
-      <template #breadcrumb>
-        <bread-crumb :current-page="currentPage" />
-      </template>
-      <template #main>
-        <router-view v-slot="{ Component }">
-          <page-transition>
-            <component :is="Component" />
-          </page-transition>
-        </router-view>
-      </template>
-    </component>
-
-    <footer-component />
-  </v-app>
+  <router-view />
 </template>
 
 <script setup lang="ts">
-import { RouterView, useRouter } from 'vue-router';
-import './assets/main.css';
-import { onBeforeMount, provide, ref, shallowRef } from 'vue';
-import layouts from './layouts/layouts';
-import PageTransition from './layouts/transitions/PageTransition.vue';
-import TitleBar from './components/common/TitleBar.vue';
-import NavigationDrawer from './components/common/NavigationDrawer.vue';
-import BreadCrumb from './components/common/BreadCrumb.vue';
-
-import FooterComponent from './components/common/FooterComponent.vue';
+import { ref, shallowRef } from 'vue';
+import { useRouter } from 'vue-router';
+import layouts from 'layouts/layouts';
 
 const layout = shallowRef('div');
-const currentPage = ref('home');
-const backgroundColor = ref('');
+const currentPage = ref('');
 
 const router = useRouter();
 router.afterEach((to) => {
-  const layoutName = (to.meta?.layout as string) || 'CenteredLayout';
-  layout.value = layouts[layoutName] || 'CenteredLayout';
+  const layoutName = (to.meta?.layout as string) || 'AuthenticatedLayout';
+  layout.value = (layouts[layoutName] as string) || 'AuthenticatedLayout';
   currentPage.value = (to?.meta?.title as string) ?? '';
 });
 
@@ -50,17 +21,4 @@ router.beforeEach((to, from, next) => {
   currentPage.value = '';
   next();
 });
-
-const changeBackgroundColor = () => {
-  //const colors = ['!tw-bg-astral-50', '!tw-bg-astral-500']
-  const colors = ['!tw-bg-astral-50'];
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  backgroundColor.value = colors[randomIndex];
-};
-
-onBeforeMount(() => {
-  changeBackgroundColor();
-});
-
-provide('app:layout', layout);
 </script>
