@@ -9,7 +9,7 @@
     >
       <q-card-section avatar>
         <q-avatar>
-          <img :src="project.img" :alt="project.name" />
+          <img :src="project.file" :alt="project.name" />
         </q-avatar>
       </q-card-section>
 

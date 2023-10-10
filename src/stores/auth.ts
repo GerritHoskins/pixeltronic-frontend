@@ -1,12 +1,8 @@
 import { defineStore } from 'pinia';
 import { api } from 'boot/axios';
 
-export type RegisterRequestParams = {
-  username: string;
-  password: string;
-};
-export type LoginRequestParams = {
-  username: string;
+export type RequestParams = {
+  email: string;
   password: string;
 };
 
@@ -15,24 +11,24 @@ export const useAuthStore = defineStore({
   state: () => ({
     user: {
       id: null,
-      username: null,
+      email: null,
       token: null,
       role: null,
     },
   }),
   actions: {
-    async register(data: RegisterRequestParams) {
+    async register(data: RequestParams) {
       const response = await api.post('auth/register', data);
       this.user = response.data.user;
     },
-    async login(data: LoginRequestParams) {
+    async login(data: RequestParams) {
       const response = await api.post('auth/login', data);
       this.user = response.data.user;
     },
     logout() {
       this.user = {
         id: null,
-        username: null,
+        email: null,
         token: null,
         role: null,
       };

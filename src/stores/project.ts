@@ -9,7 +9,7 @@ export type Project = {
   id: string;
   name: string;
   desc: string;
-  img?: File[];
+  file?: File[];
 };
 
 export type ProjectGetRequestParams = {
@@ -19,7 +19,7 @@ export type ProjectGetRequestParams = {
 export type ProjectAddRequestParams = {
   name: string;
   desc: string;
-  img?: File[];
+  file?: File[];
 };
 
 export const useProjectStore = defineStore({

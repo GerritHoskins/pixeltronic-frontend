@@ -106,11 +106,11 @@ const handleLoginOrRegister = async () => {
   try {
     if (registerClicked.value) {
       await authStore.register({
-        username: form.email,
+        email: form.email,
         password: form.password,
       });
     } else {
-      await authStore.login({ username: form.email, password: form.password });
+      await authStore.login({ email: form.email, password: form.password });
     }
 
     await router.push('/');

@@ -26,13 +26,14 @@
       :rules="[rules.required]"
     ></q-input>
 
-    <q-input
+    <q-file
       label="Upload Image"
       v-model="image"
       accept="image/*"
       outlined
-      name="image"
-    ></q-input>
+      id="file"
+      name="file"
+    ></q-file>
 
     <q-btn type="submit" color="primary" :disabled="!isValid">Submit</q-btn>
   </q-form>
@@ -62,7 +63,7 @@ const handleSubmit = async () => {
     await projectStore.add({
       name: name.value,
       desc: description.value,
-      img: image.value,
+      file: image.value,
     });
     await router.push({ name: 'project-list' });
   }
