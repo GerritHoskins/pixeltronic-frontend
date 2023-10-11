@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
-    <div class="q-pa-md">
-      <h1>Login</h1>
+    <div class="q-pa-md login-page">
+      <h1>{{ isRegisterMode ? 'Register' : 'Login' }}</h1>
       <div class="row">
         <q-form
           @submit="handleSubmit"
@@ -16,10 +16,10 @@
             hint="Email"
             lazy-rules
             :rules="[
-              (val) => (val && val.length > 0) || 'Please use a valid email',
+              (val) => (val && val.length > 0) || 'Email is required',
+              (val) => emailPattern.test(val) || 'Please use a valid email',
             ]"
           />
-
           <q-input
             dense
             filled
@@ -30,13 +30,11 @@
             lazy-rules
             :rules="[
               (val) =>
-                val.length >= 6 ||
-                'Your password must be at least 6 characters long',
+                val.length >= 6 || 'Password must be at least 6 characters',
             ]"
           />
-
           <q-input
-            v-if="registerClicked"
+            v-if="isRegisterMode"
             dense
             v-model="confirmationPassword"
             filled
@@ -47,21 +45,19 @@
             :rules="[
               () =>
                 form.password === confirmationPassword ||
-                'The passwords do not match.',
+                'Passwords do not match',
             ]"
           />
-
           <q-toggle
-            v-if="registerClicked"
+            v-if="isRegisterMode"
             v-model="accept"
             label="I accept the license and terms"
           />
-
           <div>
             <q-btn
               :ripple="false"
               no-caps
-              :label="registerClicked ? 'Register' : 'Login'"
+              :label="isRegisterMode ? 'Register' : 'Login'"
               type="submit"
               color="primary"
             />
@@ -69,7 +65,11 @@
               :ripple="false"
               no-caps
               @click="onRegisterClick"
-              label="Don't have an accout? Register"
+              :label="
+                isRegisterMode
+                  ? 'Already have an account? Login'
+                  : 'Dont have an account? Register'
+              "
               color="transparent"
               text-color="primary"
               flat
@@ -94,52 +94,50 @@ const form = reactive({
   password: '',
 });
 
-const registerClicked = ref(false);
+const isRegisterMode = ref(false);
 const confirmationPassword = ref('');
 const accept = ref(false);
 
-const onRegisterClick = () => (registerClicked.value = true);
+const onRegisterClick = () => (isRegisterMode.value = true);
+
+const emailPattern = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
 const authStore = useAuthStore();
 const router = useRouter();
-const handleLoginOrRegister = async () => {
-  try {
-    if (registerClicked.value) {
-      await authStore.register({
-        email: form.email,
-        password: form.password,
-      });
-    } else {
-      await authStore.login({ email: form.email, password: form.password });
-    }
+const $q = useQuasar();
 
-    await router.push('/');
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+const showError = (message: string) => {
+  $q.notify({
+    color: 'red-5',
+    textColor: 'white',
+    icon: 'error',
+    message: message,
+  });
 };
 
-const $q = useQuasar();
-const handleSubmit = async () => {
-  if (registerClicked.value && form.password !== confirmationPassword.value) {
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'error',
-      message: 'Passwords do not match.',
+const handleLoginOrRegister = async () => {
+  if (isRegisterMode.value) {
+    await authStore.register({
+      email: form.email,
+      password: form.password,
     });
+  } else {
+    await authStore.login({ email: form.email, password: form.password });
+  }
+
+  await router.push('/');
+};
+
+const handleSubmit = async () => {
+  if (isRegisterMode.value && form.password !== confirmationPassword.value) {
+    showError('Passwords do not match.');
     return;
   }
+
   try {
     await handleLoginOrRegister();
   } catch (error) {
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'error',
-      message: error ? error.toString() : 'Something went wrong.',
-    });
+    showError(error ? error.toString() : 'Something went wrong.');
   }
 };
 

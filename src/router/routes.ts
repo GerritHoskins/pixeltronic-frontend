@@ -1,5 +1,4 @@
 import { RouteRecordRaw } from 'vue-router';
-import { useAuthStore } from 'stores/auth';
 
 const childRoutesWithAuthentication = [
   {
@@ -86,12 +85,7 @@ export const allNavigationRoutes = [
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('../layouts/DefaultLayout.vue'),
-    beforeEnter: (to, from, next) => {
-      const authStore = useAuthStore();
-      if (!authStore.user.id) next({ name: 'login' });
-      else next({ name: 'blog' });
-    },
+    redirect: '/blog',
   },
   {
     path: '/blog',

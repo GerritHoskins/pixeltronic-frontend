@@ -6,10 +6,11 @@ interface State {
 }
 
 export type Project = {
-  id: string;
+  _id: string;
   name: string;
   desc: string;
-  file?: File[];
+  file: string;
+  fileName?: string;
 };
 
 export type ProjectGetRequestParams = {
@@ -19,29 +20,60 @@ export type ProjectGetRequestParams = {
 export type ProjectAddRequestParams = {
   name: string;
   desc: string;
-  file?: File[];
+  file: File | null;
+  fileName: string;
 };
 
 export const useProjectStore = defineStore({
   id: 'project',
 
-  state: (): State => {
-    return {
-      projects: [],
-    };
-  },
+  state: (): State => ({
+    projects: [],
+  }),
 
   actions: {
     async all() {
-      const response = await api.get('project/all', {});
-      this.projects = response.data.projects;
+      try {
+        const response = await api.get('project/all');
+        this.projects = response.data.projects.map((project: Project) => ({
+          _id: project._id,
+          name: project.name,
+          desc: project.desc,
+          file: `${import.meta.env.VITE_API_URL}/assets/uploads/${
+            project.file
+          }`,
+        }));
+      } catch (error) {
+        console.error('Error fetching all projects:', error);
+      }
     },
-    async get(data: ProjectGetRequestParams) {
-      const response = await api.get('project/get', { data });
-      this.projects.push(response.data);
+
+    async get(params: ProjectGetRequestParams) {
+      try {
+        const response = await api.get('project/get', { params });
+        this.projects.push(response.data);
+      } catch (error) {
+        console.error('Error fetching project:', error);
+      }
     },
+
     async add(data: ProjectAddRequestParams) {
-      await api.post('project/add', { data });
+      const formData = new FormData();
+      formData.append('file', data.file as File);
+      formData.append('fileName', data.fileName);
+      formData.append('name', data.name);
+      formData.append('desc', data.desc);
+
+      try {
+        await api.post('project/add', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        this.all(); // Refresh the project list after adding a new project.
+      } catch (error) {
+        console.error('Error adding project:', error);
+      }
     },
   },
 

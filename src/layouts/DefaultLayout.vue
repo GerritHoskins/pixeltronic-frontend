@@ -15,7 +15,6 @@
     <q-footer bordered class="bg-grey-3">
       <q-tabs
         switch-indicator
-        narrow-indicator
         no-caps
         active-color="primary"
         indicator-color="primary"
@@ -34,10 +33,31 @@
     </q-footer>
 
     <q-page-container>
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOut"
+          mode="out-in"
+        >
+          <component :is="Component" :page-title="pageTitle" />
+        </transition>
+      </router-view>
     </q-page-container>
   </q-layout>
 </template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
+import { computed } from 'vue';
+
+const router = useRouter();
+const pageTitle = computed(() => {
+  return (
+    router.currentRoute.value.meta?.contentTitle ||
+    router.currentRoute.value.meta?.title
+  );
+});
+</script>
 
 <style scoped>
 #safeArea {
@@ -45,4 +65,3 @@
     env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px) !important;
 }
 </style>
-<script setup lang="ts"></script>
