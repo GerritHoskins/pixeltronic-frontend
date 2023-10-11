@@ -3,13 +3,16 @@
     <q-card
       v-for="project in projects"
       :key="project.name"
-      dark
       bordered
       class="text-black bg-secondary"
+      dark
     >
       <q-card-section avatar>
         <q-avatar>
-          <img :src="project.file" :alt="project.name" />
+          <img
+            :alt="project.name"
+            :src="'https://pixeltronic.info/assets/uploads/' + project.file"
+          />
         </q-avatar>
       </q-card-section>
 
@@ -27,9 +30,10 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, onMounted } from 'vue';
 import { useProjectStore } from '../../stores/project';
+
 const projectStore = useProjectStore();
 
 onMounted(async () => {

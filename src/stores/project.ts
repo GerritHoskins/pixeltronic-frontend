@@ -40,8 +40,9 @@ export const useProjectStore = defineStore({
       const response = await api.get('project/get', { data });
       this.projects.push(response.data);
     },
-    add: async (data: ProjectAddRequestParams) =>
-      await api.post('project/add', data),
+    async add(data: ProjectAddRequestParams) {
+      await api.post('project/add', { data });
+    },
   },
 
   getters: {

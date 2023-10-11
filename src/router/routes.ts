@@ -28,13 +28,13 @@ const childRoutesWithAuthentication = [
         component: () => import('../components/project/ProjectDetail.vue'),
       },
       {
-        path: '',
+        path: 'add-project',
         name: 'add-project',
         meta: { title: 'Add Project' },
         component: () => import('../components/project/AddNewProject.vue'),
       },
       {
-        path: 'list',
+        path: '',
         name: 'projects',
         meta: { title: 'All Projects' },
         component: () => import('../components/project/ProjectList.vue'),

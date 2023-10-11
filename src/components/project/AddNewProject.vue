@@ -1,52 +1,52 @@
 <template>
   <q-form
     action="/"
-    method="POST"
     class="add-new-project"
     enctype="multipart/form-data"
+    method="POST"
     @submit.prevent="handleSubmit"
   >
     <q-input
-      label="Image Title"
       v-model="name"
-      required
+      :rules="[rules.required]"
+      label="Image Title"
+      name="name"
       outlined
       placeholder="Name"
-      name="name"
-      :rules="[rules.required]"
+      required
     ></q-input>
 
     <q-input
-      label="Image Description"
       v-model="description"
-      required
+      :rules="[rules.required]"
+      label="Image Description"
+      name="desc"
       outlined
       placeholder="Description"
-      name="desc"
-      :rules="[rules.required]"
+      required
     ></q-input>
 
     <q-file
-      label="Upload Image"
-      v-model="image"
-      accept="image/*"
-      outlined
       id="file"
+      v-model="file"
+      accept="image/*"
+      label="Upload Image"
       name="file"
+      outlined
     ></q-file>
 
-    <q-btn type="submit" color="primary" :disabled="!isValid">Submit</q-btn>
+    <q-btn :disabled="!isValid" color="primary" type="submit">Submit</q-btn>
   </q-form>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, ref } from 'vue';
 import { useProjectStore } from '../../stores/project';
 import { useRouter } from 'vue-router';
 
 const name = ref('');
 const description = ref('');
-const image = ref<File[] | undefined>();
+const file = ref<File[] | undefined>('');
 
 const rules = {
   required: (value: string) => !!value || 'This field is required.',
@@ -63,9 +63,9 @@ const handleSubmit = async () => {
     await projectStore.add({
       name: name.value,
       desc: description.value,
-      file: image.value,
+      file: file.value,
     });
-    await router.push({ name: 'project-list' });
+    await router.push({ name: 'projects' });
   }
 };
 </script>
