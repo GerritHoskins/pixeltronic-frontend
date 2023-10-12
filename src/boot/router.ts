@@ -1,10 +1,34 @@
 import { boot } from 'quasar/wrappers';
+import { useAuthStore } from 'stores/auth';
+import { LocalStorage } from 'quasar';
 
-export default boot(({ router, store }) => {
-  router.beforeEach((to, from, next) => {
-    // Now you need to add your authentication logic here, like calling an API endpoint
-    const userId = store.state.value.auth?.user.id;
-    if (!userId && to.name !== 'login') next({ name: 'login' });
-    else next();
+export default boot(({ router }) => {
+  router.beforeEach(async (to, from, next) => {
+    const token = getStoredToken();
+
+    if (to.name === 'logout') {
+      await performLogout();
+      return next();
+    }
+
+    if (!token && to.name !== 'login') {
+      return next({ name: 'login' });
+    }
+
+    next();
   });
+
+  function getStoredToken() {
+    try {
+      return LocalStorage.getItem('__persisted__auth');
+    } catch (e) {
+      console.error('Error retrieving persisted auth:', e);
+      return undefined;
+    }
+  }
+
+  async function performLogout() {
+    const authStore = useAuthStore();
+    await authStore.logout();
+  }
 });

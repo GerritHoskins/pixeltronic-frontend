@@ -1,10 +1,6 @@
 import { defineStore } from 'pinia';
 import { api } from 'boot/axios';
 
-interface State {
-  projects: Project[];
-}
-
 export type Project = {
   _id: string;
   name: string;
@@ -24,40 +20,45 @@ export type ProjectAddRequestParams = {
   fileName: string;
 };
 
+const API_BASE = '/api/project';
+
+const getApiFilePath = (filename: string) =>
+  `${import.meta.env.VITE_API_URL}/assets/uploads/${filename}`;
+
+export const initialProjectState = () => ({
+  projects: [],
+});
+
 export const useProjectStore = defineStore({
   id: 'project',
 
-  state: (): State => ({
-    projects: [],
-  }),
+  state: initialProjectState,
 
   actions: {
-    async all() {
+    async all(): Promise<void> {
       try {
-        const response = await api.get('project/all');
-        this.projects = response.data.projects.map((project: Project) => ({
-          _id: project._id,
-          name: project.name,
-          desc: project.desc,
-          file: `${import.meta.env.VITE_API_URL}/assets/uploads/${
-            project.file
-          }`,
+        const { data } = await api.get(`${API_BASE}/all`);
+        this.projects = data.projects.map((project: Project) => ({
+          ...project,
+          file: getApiFilePath(project.file),
         }));
       } catch (error) {
         console.error('Error fetching all projects:', error);
+        // TODO: user-friendly error handling here.
       }
     },
 
-    async get(params: ProjectGetRequestParams) {
+    async get(params: ProjectGetRequestParams): Promise<void> {
       try {
-        const response = await api.get('project/get', { params });
-        this.projects.push(response.data);
+        const { data } = await api.get(`${API_BASE}/get`, { params });
+        this.projects.push(data);
       } catch (error) {
         console.error('Error fetching project:', error);
+        // TODO: user-friendly error handling here.
       }
     },
 
-    async add(data: ProjectAddRequestParams) {
+    async add(data: ProjectAddRequestParams): Promise<void> {
       const formData = new FormData();
       formData.append('file', data.file as File);
       formData.append('fileName', data.fileName);
@@ -65,14 +66,15 @@ export const useProjectStore = defineStore({
       formData.append('desc', data.desc);
 
       try {
-        await api.post('project/add', formData, {
+        await api.post(`${API_BASE}/add`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-        this.all(); // Refresh the project list after adding a new project.
+        await this.all(); // Refresh the project list after adding a new project.
       } catch (error) {
         console.error('Error adding project:', error);
+        // TODO: user-friendly error handling here.
       }
     },
   },

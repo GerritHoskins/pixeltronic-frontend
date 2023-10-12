@@ -1,42 +1,60 @@
 import { RouteRecordRaw } from 'vue-router';
 
+// Dynamic Imports
+const BlogPage = () => import('../pages/BlogPage.vue');
+const ProjectPage = () => import('../pages/ProjectPage.vue');
+const ProjectDetail = () => import('../components/project/ProjectDetail.vue');
+const AddNewProject = () => import('../components/project/AddNewProject.vue');
+const ProjectList = () => import('../components/project/ProjectList.vue');
+const LoginPage = () => import('../pages/LoginPage.vue');
+const PrivacyPolicyPage = () => import('../pages/PrivacyPolicyPage.vue');
+const TermsOfUsePage = () => import('../pages/TermsOfUsePage.vue');
+const AuthenticatedLayout = () => import('../layouts/AuthenticatedLayout.vue');
+const DefaultLayout = () => import('../layouts/DefaultLayout.vue');
+const Error404Page = () => import('../pages/Error404Page.vue');
+
+// Common meta generator
+const generateMeta = (layout: string, title: string, options = {}) => ({
+  layout,
+  title,
+  ...options,
+});
+
 const childRoutesWithAuthentication = [
   {
     path: '',
     name: 'blog',
-    meta: {
-      layout: 'AuthenticatedLayout',
-      title: 'Blog',
+    meta: generateMeta('AuthenticatedLayout', 'Blog', {
+      floatingMenu: true,
       contentTitle: 'Interesting reads',
-    },
-    component: () => import('../pages/BlogPage.vue'),
+    }),
+    component: BlogPage,
   },
   {
     path: '/projects',
-    meta: {
-      layout: 'AuthenticatedLayout',
-      title: 'Projects',
+    meta: generateMeta('AuthenticatedLayout', 'Projects', {
+      floatingMenu: true,
       contentTitle: "Things I've built",
-    },
-    component: () => import('../pages/ProjectPage.vue'),
+    }),
+    component: ProjectPage,
     children: [
       {
         path: ':id',
         name: 'project',
-        meta: { title: 'Project' },
-        component: () => import('../components/project/ProjectDetail.vue'),
+        meta: generateMeta('AuthenticatedLayout', 'Project'),
+        component: ProjectDetail,
       },
       {
         path: 'add-project',
         name: 'add-project',
-        meta: { title: 'Add Project' },
-        component: () => import('../components/project/AddNewProject.vue'),
+        meta: generateMeta('AuthenticatedLayout', 'Add Project'),
+        component: AddNewProject,
       },
       {
         path: '',
         name: 'projects',
-        meta: { title: 'All Projects' },
-        component: () => import('../components/project/ProjectList.vue'),
+        meta: generateMeta('AuthenticatedLayout', 'All Projects'),
+        component: ProjectList,
       },
     ],
   },
@@ -45,13 +63,12 @@ const childRoutesWithAuthentication = [
 const childRoutesWithoutAuthentication = [
   {
     path: '',
-    name: 'login',
-    meta: {
-      layout: 'DefaultLayout',
-      title: 'Login',
+    name: 'logout',
+    meta: generateMeta('DefaultLayout', 'Logout', {
+      floatingMenu: true,
       contentTitle: 'Logout',
-    },
-    component: () => import('../pages/LoginPage.vue'),
+    }),
+    component: LoginPage,
   },
 ];
 
@@ -59,20 +76,18 @@ const childRoutesNoRequirements = [
   {
     path: '/privacy-policy',
     name: 'privacy-policy',
-    meta: {
-      layout: 'AuthenticatedLayout',
-      title: 'Privacy policy',
-    },
-    component: () => import('../pages/PrivacyPolicyPage.vue'),
+    meta: generateMeta('AuthenticatedLayout', 'Privacy policy', {
+      footerMenu: true,
+    }),
+    component: PrivacyPolicyPage,
   },
   {
     path: '/terms-of-use',
     name: 'terms-of-use',
-    meta: {
-      layout: 'AuthenticatedLayout',
-      title: 'Terms of use',
-    },
-    component: () => import('../pages/TermsOfUsePage.vue'),
+    meta: generateMeta('AuthenticatedLayout', 'Terms of use', {
+      footerMenu: true,
+    }),
+    component: TermsOfUsePage,
   },
 ];
 
@@ -89,17 +104,31 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/blog',
-    component: () => import('../layouts/AuthenticatedLayout.vue'),
+    component: AuthenticatedLayout,
     children: [...childRoutesWithAuthentication, ...childRoutesNoRequirements],
   },
   {
     path: '/login',
-    component: () => import('../layouts/DefaultLayout.vue'),
-    children: [...childRoutesWithoutAuthentication],
+    component: DefaultLayout,
+    children: [
+      {
+        path: '',
+        name: 'login',
+        meta: generateMeta('DefaultLayout', 'Login', {
+          contentTitle: 'Login',
+        }),
+        component: LoginPage,
+      },
+    ],
   },
   {
-    path: '/:catchAll(.*)*',
-    component: () => import('../pages/Error404Page.vue'),
+    path: '/logout',
+    component: DefaultLayout,
+    children: childRoutesWithoutAuthentication,
+  },
+  {
+    path: '/:catchAll(.)',
+    component: Error404Page,
   },
 ];
 

@@ -1,7 +1,7 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
 
-const baseURL = `${import.meta.env.VITE_API_URL}/api` || '';
+const baseURL = `${import.meta.env.VITE_API_URL}` || '';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
