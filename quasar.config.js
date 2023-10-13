@@ -95,13 +95,14 @@ module.exports = configure(function (ctx) {
           // disables Quasar's back button management.
           backButton: true,
         },
+        dark: true, // or Boolean true/false
         brand: {
           primary: '#35869c',
           secondary: '#f1f9fa',
-          accent: '#162b36',
+          accent: '#5ce0bc',
 
-          dark: '#93b7be',
-          'dark-page': '#121111',
+          dark: '#212121',
+          'dark-page': '#616161',
 
           positive: '#21BA45',
           negative: '#C10015',
@@ -121,7 +122,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['LocalStorage'],
+      plugins: ['LocalStorage', 'Dark'],
     },
 
     animations: 'all', // --- includes all animations

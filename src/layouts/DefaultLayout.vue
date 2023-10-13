@@ -6,7 +6,12 @@
     style="min-height: 100vh"
     class="default-layout shadow-2 rounded-borders"
   >
-    <q-header bordered class="bg-grey-3 text-grey-8">
+    <q-header
+      bordered
+      :class="
+        $q.dark.isActive ? 'bg-grey-10 text-grey-3' : 'bg-grey-3 text-grey-8'
+      "
+    >
       <q-toolbar>
         <q-toolbar-title class="text-center"> pixeltronic.dev </q-toolbar-title>
       </q-toolbar>
@@ -39,7 +44,9 @@
           leave-active-class="animated fadeOut"
           mode="out-in"
         >
-          <component :is="Component" :page-title="pageTitle" />
+          <q-page padding>
+            <component :is="Component" :page-title="pageTitle" />
+          </q-page>
         </transition>
       </router-view>
     </q-page-container>

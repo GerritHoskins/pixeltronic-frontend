@@ -1,8 +1,6 @@
 <template>
   <div class="q-pa-md project-page">
-    <h1>
-      {{ pageTitle }}
-    </h1>
+    <page-header>{{ pageTitle }}</page-header>
     <q-btn
       :ripple="false"
       label="Add new project"
@@ -17,6 +15,8 @@
 </template>
 
 <script lang="ts" setup>
+import PageHeader from 'components/common/PageHeader.vue';
+
 defineProps<{
   pageTitle: string;
 }>();

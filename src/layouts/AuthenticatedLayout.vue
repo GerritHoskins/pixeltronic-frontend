@@ -31,6 +31,9 @@
           :ripple="false"
           :aria-label="`Navigate to ${tabItem.label}`"
         />
+        <q-tab>
+          <q-icon name="dark" />
+        </q-tab>
       </q-tabs>
     </q-footer>
 
@@ -137,7 +140,7 @@ const pageTitle = computed(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #safeArea {
   margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
     env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);

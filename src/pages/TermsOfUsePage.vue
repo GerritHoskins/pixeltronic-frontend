@@ -1,12 +1,12 @@
 <template>
   <div class="q-pa-md">
-    <h1>
-      {{ pageTitle }}
-    </h1>
+    <page-header>{{ pageTitle }}</page-header>
   </div>
 </template>
 
 <script setup lang="ts">
+import PageHeader from 'components/common/PageHeader.vue';
+
 defineProps<{
   pageTitle: string;
 }>();
