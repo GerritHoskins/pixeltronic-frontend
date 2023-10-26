@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
-import { LocalStorage } from 'quasar';
-import { api } from 'boot/axios';
+import { Preferences } from '@capacitor/preferences';
+import { axiosInstance } from '@/api/axiosInstance';
 
-import { initialProjectState } from 'stores/project';
-import { useCrypto } from '../composables/useCrypto';
-import { AxiosResponse } from 'axios';
+import { initialProjectState } from '@/stores/project';
+import { useCrypto } from '@/composables/useCrypto';
+import type { AxiosResponse } from 'axios';
 
 interface User {
   id: null | string;
@@ -33,20 +33,20 @@ export const useAuthStore = defineStore({
   state: initialAuthState,
   actions: {
     async register(data: RequestParams) {
-      const response = await this.performAuth('/api/auth/register', data);
+      const response = await this.performAuth('/auth/register', data);
       this.updateStateFromResponse(response);
       await this.persist();
     },
 
     async login(data: RequestParams) {
-      const response = await this.performAuth('/api/auth/login', data);
+      const response = await this.performAuth('/auth/login', data);
       this.updateStateFromResponse(response);
       await this.persist();
     },
 
     async performAuth(endpoint: string, data: RequestParams) {
       try {
-        return await api.post(endpoint, data);
+        return await axiosInstance.post(endpoint, data);
       } catch (e) {
         console.error(`Authentication error on ${endpoint}:`, e);
         throw e;
@@ -62,7 +62,7 @@ export const useAuthStore = defineStore({
       try {
         const { encrypt } = useCrypto();
         const encryptedData = encrypt(this.token);
-        LocalStorage.set('__persisted__auth', encryptedData);
+        await Preferences.set({ key: '__persisted__auth', value: encryptedData });
       } catch (e) {
         console.error('Error persisting authentication data:', e);
       }
@@ -71,8 +71,8 @@ export const useAuthStore = defineStore({
     async logout() {
       Object.assign(this, initialAuthState());
       initialProjectState();
-      LocalStorage.remove('__persisted__auth');
-      await api.post('/api/auth/logout');
+      await Preferences.remove({ key: '__persisted__auth' });
+      await axiosInstance.post('/auth/logout');
     },
   },
 });

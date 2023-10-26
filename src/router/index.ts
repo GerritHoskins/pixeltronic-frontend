@@ -1,38 +1,41 @@
-import { route } from 'quasar/wrappers';
-import {
-  createMemoryHistory,
-  createRouter,
-  createWebHashHistory,
-  createWebHistory,
-} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
+import routes from '@/router/routes';
+import { Preferences } from '@capacitor/preferences';
+import { useAuthStore } from '@/stores/auth';
 
-import routes from './routes';
-
-/*
- * If not building with SSR mode, you can
- * directly export the Router instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Router instance.
- */
-
-export default route(function (/* { store, ssrContext } */) {
-  const createHistory = process.env.SERVER
-    ? createMemoryHistory
-    : process.env.VUE_ROUTER_MODE === 'history'
-    ? createWebHistory
-    : createWebHashHistory;
-
-  const Router = createRouter({
-    scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes,
-
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
-    history: createHistory(process.env.VUE_ROUTER_BASE),
-  });
-
-  return Router;
+const router = createRouter({
+  history: createWebHistory(),
+  routes: routes,
 });
+
+router.beforeEach(async (to, from, next) => {
+  const token = getStoredToken();
+
+  if (to.name === 'logout') {
+    await performLogout();
+    return next();
+  }
+
+  if (!token && to.name !== 'login') {
+    return next({ name: 'login' });
+  }
+
+  next();
+});
+
+async function getStoredToken() {
+  try {
+    const { value } = await Preferences.get({ key: '__persisted__auth' });
+    return value;
+  } catch (e) {
+    console.error('Error retrieving persisted auth:', e);
+    return undefined;
+  }
+}
+
+async function performLogout() {
+  const authStore = useAuthStore();
+  await authStore.logout();
+}
+
+export default router;

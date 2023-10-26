@@ -1,74 +1,33 @@
 <template>
-  <q-layout
-    id="safeArea"
-    view="lHh lpr lFf"
-    container
-    style="min-height: 100vh"
-    class="default-layout shadow-2 rounded-borders"
-  >
-    <q-header
-      bordered
-      :class="
-        $q.dark.isActive ? 'bg-grey-10 text-grey-3' : 'bg-grey-3 text-grey-8'
-      "
-    >
-      <q-toolbar>
-        <q-toolbar-title class="text-center"> pixeltronic.dev </q-toolbar-title>
-      </q-toolbar>
-    </q-header>
-
-    <q-footer bordered class="bg-grey-3">
-      <q-tabs
-        switch-indicator
-        no-caps
-        active-color="primary"
-        indicator-color="primary"
-        class="text-grey-8"
-      >
-        <q-route-tab :ripple="false" :to="{ name: 'login' }">
-          Login
-        </q-route-tab>
-        <q-route-tab :ripple="false" :to="{ name: 'privacy-policy' }">
-          Privacy policy
-        </q-route-tab>
-        <q-route-tab :ripple="false" :to="{ name: 'terms-of-use' }">
-          Terms of use
-        </q-route-tab>
-      </q-tabs>
-    </q-footer>
-
-    <q-page-container>
+  <div id="safeArea" style="min-height: 100vh" class="default-layout shadow-2 rounded-borders">
+    <navigation-component :nav-items="navItems" />
+    <main class="mb-auto">
       <router-view v-slot="{ Component }">
-        <transition
-          enter-active-class="animated fadeIn"
-          leave-active-class="animated fadeOut"
-          mode="out-in"
-        >
-          <q-page padding>
-            <component :is="Component" :page-title="pageTitle" />
-          </q-page>
-        </transition>
+        <component :is="Component" :page-title="pageTitle" />
       </router-view>
-    </q-page-container>
-  </q-layout>
+    </main>
+
+    <footer-component />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
+import NavigationComponent from '@/components/common/NavigationComponent.vue';
+import useNavigationRoutes from '@/composables/useNavigationRoutes';
+import FooterComponent from '@/components/common/FooterComponent.vue';
 
 const router = useRouter();
 const pageTitle = computed(() => {
-  return (
-    router.currentRoute.value.meta?.contentTitle ||
-    router.currentRoute.value.meta?.title
-  );
+  return router.currentRoute.value.meta?.contentTitle || router.currentRoute.value.meta?.title;
 });
+const { navItems } = useNavigationRoutes();
 </script>
 
 <style scoped>
 #safeArea {
-  margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
-    env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px) !important;
+  margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px)
+    env(safe-area-inset-left, 0px) !important;
 }
 </style>

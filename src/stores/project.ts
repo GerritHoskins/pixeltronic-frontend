@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { api } from 'boot/axios';
+import { axiosInstance } from '@/api/axiosInstance';
 
 export type Project = {
   _id: string;
@@ -20,13 +20,12 @@ export type ProjectAddRequestParams = {
   fileName: string;
 };
 
-const API_BASE = '/api/project';
+const API_BASE = '/project';
 
-const getApiFilePath = (filename: string) =>
-  `${import.meta.env.VITE_API_URL}/assets/uploads/${filename}`;
+const getApiFilePath = (filename: string) => `${import.meta.env.VITE_API_BASE_URL}/assets/uploads/${filename}`;
 
 export const initialProjectState = () => ({
-  projects: [],
+  projects: [] as unknown as Project[],
 });
 
 export const useProjectStore = defineStore({
@@ -37,7 +36,7 @@ export const useProjectStore = defineStore({
   actions: {
     async all(): Promise<void> {
       try {
-        const { data } = await api.get(`${API_BASE}/all`);
+        const { data } = await axiosInstance.get(`${API_BASE}/all`);
         this.projects = data.projects.map((project: Project) => ({
           ...project,
           file: getApiFilePath(project.file),
@@ -50,7 +49,7 @@ export const useProjectStore = defineStore({
 
     async get(params: ProjectGetRequestParams): Promise<void> {
       try {
-        const { data } = await api.get(`${API_BASE}/get`, { params });
+        const { data } = await axiosInstance.get(`${API_BASE}/get`, { params });
         this.projects.push(data);
       } catch (error) {
         console.error('Error fetching project:', error);
@@ -66,7 +65,7 @@ export const useProjectStore = defineStore({
       formData.append('desc', data.desc);
 
       try {
-        await api.post(`${API_BASE}/add`, formData, {
+        await axiosInstance.post(`${API_BASE}/add`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -80,6 +79,6 @@ export const useProjectStore = defineStore({
   },
 
   getters: {
-    projectList: (state) => state.projects,
+    projectList: state => state.projects,
   },
 });

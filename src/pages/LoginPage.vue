@@ -1,92 +1,56 @@
 <template>
   <div class="login-page">
-    <div class="row full-height justify-center items-center">
-      <div
-        class="col col-md-4 q-gutter-lg vertical-middle self-center justify-center"
-      >
+    <div class="h-full flex flex-col justify-center items-center">
+      <div class="flex flex-col max-w-[18rem] w-full">
         <page-header>{{ isRegisterMode ? 'Register' : 'Login' }}</page-header>
-        <q-form @submit="handleSubmit" @reset="reset">
-          <q-input
-            dense
-            filled
-            v-model="form.email"
-            label="Your email *"
-            hint="Email"
-            lazy-rules
-            :rules="[
-              (val) => (val && val.length > 0) || 'Email is required',
-              (val) => emailPattern.test(val) || 'Please use a valid email',
-            ]"
-          />
-          <q-input
-            dense
-            filled
-            v-model="form.password"
-            type="password"
-            label="Your password *"
-            hint="Password"
-            lazy-rules
-            :rules="[
-              (val) =>
-                val.length >= 6 || 'Password must be at least 6 characters',
-            ]"
-          />
-          <q-input
-            v-if="isRegisterMode"
-            dense
-            v-model="confirmationPassword"
-            filled
-            type="password"
-            label="Confirm your password *"
-            hint="Confirm your password"
-            lazy-rules
-            :rules="[
-              () =>
-                form.password === confirmationPassword ||
-                'Passwords do not match',
-            ]"
-          />
-          <q-toggle
-            v-if="isRegisterMode"
-            v-model="accept"
-            label="I accept the license and terms"
-          />
-          <div class="q-pt-md">
-            <q-btn
-              :ripple="false"
-              no-caps
-              :label="isRegisterMode ? 'Register' : 'Login'"
-              type="submit"
-              color="primary"
+        <form @submit="handleSubmit" @reset="reset" class="flex flex-col gap-2">
+          <label class="block">
+            <span class="text-gray-700">Email</span>
+            <input v-model="form.email" type="email" class="mt-1 block w-full" placeholder="" />
+          </label>
+
+          <label class="block">
+            <span class="text-gray-700">Password</span>
+            <input v-model="form.password" type="password" class="mt-1 block w-full" placeholder="" />
+          </label>
+
+          <label class="block" v-if="isRegisterMode">
+            <span class="text-gray-700">Confirm Password</span>
+            <input
+              v-if="isRegisterMode"
+              v-model="confirmationPassword"
+              type="password"
+              class="mt-1 block w-full"
+              placeholder=""
             />
-            <q-btn
-              :ripple="false"
-              no-caps
-              @click="onRegisterClick"
-              :label="
-                isRegisterMode
-                  ? 'Already have an account? Login'
-                  : 'Dont have an account? Register'
-              "
-              color="transparent"
-              text-color="primary"
-              flat
-              dense
-            >
-            </q-btn>
+          </label>
+
+          <div class="block">
+            <div class="mt-2">
+              <div>
+                <label class="inline-flex items-center">
+                  <input type="checkbox" checked="" v-model="accept" />
+                  <span @click="onRegisterClick" class="ml-2">Don't have an account?</span>
+                </label>
+              </div>
+            </div>
           </div>
-        </q-form>
+          <div class="block">
+            <button type="submit">
+              {{ isRegisterMode ? 'Register' : 'Login' }}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useQuasar } from 'quasar';
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from './../stores/auth';
-import PageHeader from 'components/common/PageHeader.vue';
+import { useAuthStore } from '@/stores/auth';
+import PageHeader from '@/components/common/PageHeader.vue';
 
 const form = reactive({
   email: '',
@@ -99,14 +63,13 @@ const accept = ref(false);
 
 const onRegisterClick = () => (isRegisterMode.value = true);
 
-const emailPattern = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+//const emailPattern = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
 const authStore = useAuthStore();
 const router = useRouter();
-const $q = useQuasar();
 
 const showError = (message: string) => {
-  $q.notify({
+  console.table({
     color: 'red-5',
     textColor: 'white',
     icon: 'error',

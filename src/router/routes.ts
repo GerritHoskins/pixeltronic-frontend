@@ -1,11 +1,9 @@
-import { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
+import type { NavigationRouterLink } from '@/router/definitions';
 
 // Dynamic Imports
 const BlogPage = () => import('../pages/BlogPage.vue');
 const ProjectPage = () => import('../pages/ProjectPage.vue');
-const ProjectDetail = () => import('../components/project/ProjectDetail.vue');
-const AddNewProject = () => import('../components/project/AddNewProject.vue');
-const ProjectList = () => import('../components/project/ProjectList.vue');
 const LoginPage = () => import('../pages/LoginPage.vue');
 const PrivacyPolicyPage = () => import('../pages/PrivacyPolicyPage.vue');
 const TermsOfUsePage = () => import('../pages/TermsOfUsePage.vue');
@@ -32,31 +30,12 @@ const childRoutesWithAuthentication = [
   },
   {
     path: '/projects',
+    name: 'projects',
     meta: generateMeta('AuthenticatedLayout', 'Projects', {
       floatingMenu: true,
       contentTitle: "Things I've built",
     }),
     component: ProjectPage,
-    children: [
-      {
-        path: ':id',
-        name: 'project',
-        meta: generateMeta('AuthenticatedLayout', 'Project'),
-        component: ProjectDetail,
-      },
-      {
-        path: 'add-project',
-        name: 'add-project',
-        meta: generateMeta('AuthenticatedLayout', 'Add Project'),
-        component: AddNewProject,
-      },
-      {
-        path: '',
-        name: 'projects',
-        meta: generateMeta('AuthenticatedLayout', 'All Projects'),
-        component: ProjectList,
-      },
-    ],
   },
 ];
 

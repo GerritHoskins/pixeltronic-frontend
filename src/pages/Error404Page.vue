@@ -7,8 +7,7 @@
 
       <div class="text-h2" style="opacity: 0.4">Oops. Nothing here...</div>
 
-      <q-btn
-        outline
+      <router-link
         class="q-mt-xl"
         color="secondary"
         text-color="secondary"
@@ -20,5 +19,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts"></script>
