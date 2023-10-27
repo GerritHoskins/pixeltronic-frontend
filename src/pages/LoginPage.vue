@@ -1,8 +1,11 @@
 <template>
-  <div class="login-page">
+  <div class="login-page pt-[15rem]">
     <div class="h-full flex flex-col justify-center items-center">
       <div class="flex flex-col max-w-[18rem] w-full">
-        <page-header />
+        <div class="my-3">
+          <brand-logo />
+          <p class="text-lg leading-7 pt-2 pb-4 text-gray-500 dark:text-gray-400">Back already?</p>
+        </div>
 
         <div class="flex flex-col gap-4">
           <div v-if="errorMessage.message" :class="`${errorMessage.color} ${errorMessage.textColor} p-2 mb-4 `">
@@ -35,8 +38,8 @@
 import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import PageHeader from '@/components/common/PageHeader.vue';
 import { supabase } from '@/main';
+import BrandLogo from '@/components/common/BrandLogo.vue';
 
 const authStore = useUserStore();
 const router = useRouter();

@@ -1,4 +1,4 @@
-import { Config } from 'tailwindcss';
+import type { Config } from 'tailwindcss';
 import colors from 'tailwindcss/colors';
 
 import { fontFamily } from 'tailwindcss/defaultTheme';
@@ -13,7 +13,7 @@ const config: Config = defineTailwindConfig({
         sans: ['Sora', ...fontFamily.sans],
       },
       colors: {
-        primary: colors.pink,
+        primary: colors.cyan,
         gray: colors.gray,
       },
     },

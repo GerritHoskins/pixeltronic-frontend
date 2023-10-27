@@ -1,7 +1,5 @@
 <template>
-  <div id="safeArea" style="min-height: 100vh" class="flex h-screen flex-col justify-between font-sans">
-    <navigation-component :nav-items="navItems.header" v-if="jwt" />
-
+  <div id="safeArea" class="flex h-screen default-layout flex-col justify-between font-sans">
     <main class="mb-auto">
       <router-view v-slot="{ Component }">
         <component :is="Component" />
@@ -13,13 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import NavigationComponent from '@/components/common/NavigationComponent.vue';
 import useNavigationRoutes from '@/composables/useNavigationRoutes';
 import FooterComponent from '@/components/common/FooterComponent.vue';
-import { useUserStore } from '@/stores/user';
-
-const { jwt } = useUserStore();
-
 const { navItems } = useNavigationRoutes();
 </script>
 

@@ -1,9 +1,5 @@
 <template>
-  <div
-    id="safeArea"
-    style="min-height: 100vh"
-    class="authenticated-layout flex h-screen flex-col justify-between font-sans"
-  >
+  <div id="safeArea" class="authenticated-layout flex h-screen flex-col justify-between font-sans">
     <navigation-component :nav-items="navItems.header" v-if="jwt" />
 
     <main class="mb-auto">
