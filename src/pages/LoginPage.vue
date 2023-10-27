@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page pt-[15rem]">
+  <div class="login-page pt-[13rem]">
     <div class="h-full flex flex-col justify-center items-center">
       <div class="flex flex-col max-w-[18rem] w-full">
         <div class="my-3">
@@ -26,7 +26,7 @@
             @click="onRegisterClick"
             class="mt-2 cursor-pointer prose max-w-none text-sm text-center text-gray-500 dark:text-gray-400"
           >
-            {{ isRegisterMode ? 'Already have an Account?' : 'Creat a new Account?' }}
+            {{ isRegisterMode ? 'Already have an Account?' : 'Create a new Account?' }}
           </div>
         </div>
       </div>
