@@ -1,41 +1,124 @@
+import type { RouteRecordRaw } from 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router';
-import routes from '@/router/routes';
+import useStore from '@/stores/store';
 import { Preferences } from '@capacitor/preferences';
-import { useAuthStore } from '@/stores/auth';
+import Error404Page from '@/pages/Error404Page.vue';
+import { useUserStore } from '@/stores/user';
+
+// Default meta configuration
+const defaultMeta = {
+  headerNavigation: false,
+  footerNavigation: false,
+};
+
+// Common meta generator
+const generateMeta = (layout: string, title: string, options = {}) => ({
+  ...defaultMeta,
+  layout,
+  title,
+  ...options,
+});
+
+const isAuthenticated = async () => !!(await Preferences.get({ key: 'jwt' })).value;
+
+const navigationRoutes = [
+  {
+    path: '/',
+    redirect: '/blog',
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/pages/LoginPage.vue'),
+    meta: generateMeta('DefaultLayout', 'Login', {
+      contentTitle: 'Login',
+      requiresUnauth: true,
+      headerNavigation: true,
+    }),
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: () => import('@/pages/LoginPage.vue'),
+    meta: generateMeta('DefaultLayout', 'Logout', {
+      contentTitle: 'Logout',
+      requiresUnauth: true,
+      headerNavigation: true,
+      action: async () => {
+        const userStore = useUserStore();
+        await userStore.logout();
+        router.push('/login');
+      },
+    }),
+  },
+  {
+    path: '/blog',
+    name: 'blog',
+    component: () => import('@/pages/BlogPage.vue'),
+    meta: generateMeta('AuthenticatedLayout', 'Blog', {
+      contentTitle: 'Interesting reads',
+      requiresAuth: true,
+      headerNavigation: true,
+    }),
+  },
+  {
+    path: '/project',
+    name: 'project',
+    component: () => import('@/pages/ProjectPage.vue'),
+    meta: generateMeta('AuthenticatedLayout', 'Projects', {
+      contentTitle: 'Stuff I built',
+      requiresAuth: true,
+      headerNavigation: true,
+    }),
+  },
+  {
+    path: '/privacy-policy',
+    name: 'privacy-policy',
+    component: () => import('@/pages/PrivacyPolicyPage.vue'),
+    meta: generateMeta('AuthenticatedLayout', 'Privacy Policy', {
+      requiresAuth: false,
+      footerNavigation: true,
+    }),
+  },
+  {
+    path: '/terms-of-use',
+    name: 'terms-of-use',
+    component: () => import('@/pages/TermsOfUsePage.vue'),
+    meta: generateMeta('AuthenticatedLayout', 'Terms of Use', {
+      requiresAuth: false,
+      footerNavigation: true,
+    }),
+  },
+  { path: '/:pathMatch(.*)*', name: 'NotFound', component: Error404Page },
+];
+export const allNavigationRoutes = navigationRoutes;
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes: routes,
+  history: createWebHistory('/'),
+  routes: navigationRoutes as Array<RouteRecordRaw>,
 });
 
 router.beforeEach(async (to, from, next) => {
-  const token = getStoredToken();
+  const store = useStore();
 
-  if (to.name === 'logout') {
-    await performLogout();
-    return next();
+  if (!store.initialized) {
+    try {
+      await store.initialize();
+    } catch (error) {
+      console.error('Initialization failed:', error);
+      next('/error');
+      return;
+    }
   }
 
-  if (!token && to.name !== 'login') {
-    return next({ name: 'login' });
+  const authenticated = await isAuthenticated();
+  if (to.matched.some(record => record.meta.requiresAuth) && !authenticated) {
+    next('/login');
+  } else if (to.matched.some(record => record.meta.requiresUnauth) && authenticated) {
+    next('/blog');
+  } else {
+    next();
   }
-
-  next();
 });
-
-async function getStoredToken() {
-  try {
-    const { value } = await Preferences.get({ key: '__persisted__auth' });
-    return value;
-  } catch (e) {
-    console.error('Error retrieving persisted auth:', e);
-    return undefined;
-  }
-}
-
-async function performLogout() {
-  const authStore = useAuthStore();
-  await authStore.logout();
-}
 
 export default router;

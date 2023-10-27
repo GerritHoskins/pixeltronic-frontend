@@ -5,6 +5,6 @@
     >
       <slot />
     </h1>
-    <p class="text-lg leading-7 text-gray-500 dark:text-gray-400">Sub page title</p>
+    <p class="text-lg leading-7 text-gray-500 dark:text-gray-400"><slot name="subtitle" /></p>
   </div>
 </template>

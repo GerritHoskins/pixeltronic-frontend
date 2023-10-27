@@ -8,6 +8,8 @@ interface ImportMeta {
     VITE_ROUTER_MODE: string;
     VITE_ENCRYPTION_KEY: string;
     VITE_GIT_HUB_TOKEN: string;
+    VITE_SUPABASE_URL: string;
+    VITE_ANON_KEY: string;
     VITE_APP_TITLE?: string;
     MODE: 'development' | 'production';
     BASE_URL: string; // Base public path when served in development or production.

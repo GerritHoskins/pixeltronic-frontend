@@ -2,79 +2,86 @@
   <div class="login-page">
     <div class="h-full flex flex-col justify-center items-center">
       <div class="flex flex-col max-w-[18rem] w-full">
-        <page-header>{{ isRegisterMode ? 'Register' : 'Login' }}</page-header>
-        <form @submit="handleSubmit" @reset="reset" class="flex flex-col gap-2">
-          <label class="block">
-            <span class="text-gray-700">Email</span>
-            <input v-model="form.email" type="email" class="mt-1 block w-full" placeholder="" />
-          </label>
-
-          <label class="block">
-            <span class="text-gray-700">Password</span>
-            <input v-model="form.password" type="password" class="mt-1 block w-full" placeholder="" />
-          </label>
-
-          <label class="block" v-if="isRegisterMode">
-            <span class="text-gray-700">Confirm Password</span>
-            <input
-              v-if="isRegisterMode"
-              v-model="confirmationPassword"
-              type="password"
-              class="mt-1 block w-full"
-              placeholder=""
-            />
-          </label>
-
-          <div class="block">
-            <div class="mt-2">
-              <div>
-                <label class="inline-flex items-center">
-                  <input type="checkbox" checked="" v-model="accept" />
-                  <span @click="onRegisterClick" class="ml-2">Don't have an account?</span>
-                </label>
-              </div>
-            </div>
+        <page-header>
+          <template #default>
+            {{ isRegisterMode ? 'Register' : 'Login' }}
+          </template>
+          <template #subtitle>
+            {{ isRegisterMode ? 'Sign up now!' : 'Hi, back already?' }}
+          </template>
+        </page-header>
+        <div>
+          <div v-if="errorMessage.message" :class="`${errorMessage.color} ${errorMessage.textColor} p-2 mb-4 `">
+            {{ errorMessage.message }}
           </div>
-          <div class="block">
-            <button type="submit">
-              {{ isRegisterMode ? 'Register' : 'Login' }}
-            </button>
+          <div class="flex flex-col gap-2" v-if="!isRegisterMode">
+            <input v-model="form.email" placeholder="Email" />
+            <input type="password" v-model="form.password" placeholder="Password" />
+            <button @click="handleSubmit">Login</button>
           </div>
-        </form>
+
+          <div class="flex flex-col gap-2" v-if="isRegisterMode">
+            <input v-model="form.email" placeholder="Email" />
+            <input type="password" v-model="form.password" placeholder="Password" />
+            <input type="password" v-model="confirmationPassword" placeholder="Confirm Password" />
+            <button class="rounded-none" @click="handleSubmit">Register</button>
+          </div>
+
+          <div @click="onRegisterClick" class="mt-2 cursor-pointer prose max-w-none text-gray-500 dark:text-gray-400">
+            {{ isRegisterMode ? 'Already have an Account?' : 'Creat a new Account?' }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import { useUserStore } from '@/stores/user';
 import PageHeader from '@/components/common/PageHeader.vue';
+import { supabase } from '@/main';
 
+const authStore = useUserStore();
+const router = useRouter();
 const form = reactive({
   email: '',
   password: '',
+});
+
+onMounted(() => {
+  supabase.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN') {
+      authStore.updateStateFromResponse({ user: session?.user, jwt: session?.access_token });
+      await authStore.persist();
+      router.push('/blog');
+    } else if (event === 'SIGNED_OUT') {
+      await authStore.logout();
+      router.push('/login');
+    }
+  });
 });
 
 const isRegisterMode = ref(false);
 const confirmationPassword = ref('');
 const accept = ref(false);
 
-const onRegisterClick = () => (isRegisterMode.value = true);
+const onRegisterClick = () => {
+  reset();
+  isRegisterMode.value = !isRegisterMode.value;
+};
 
 //const emailPattern = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-
-const authStore = useAuthStore();
-const router = useRouter();
-
+const errorMessage = reactive({
+  color: '',
+  textColor: '',
+  message: '',
+});
 const showError = (message: string) => {
-  console.table({
-    color: 'red-5',
-    textColor: 'white',
-    icon: 'error',
-    message: message,
-  });
+  errorMessage.message = message;
+  errorMessage.color = 'bg-red-500';
+  errorMessage.textColor = 'text-white';
 };
 
 const handleLoginOrRegister = async () => {
@@ -86,8 +93,7 @@ const handleLoginOrRegister = async () => {
   } else {
     await authStore.login({ email: form.email, password: form.password });
   }
-
-  await router.push('/');
+  reset();
 };
 
 const handleSubmit = async () => {
@@ -108,5 +114,6 @@ const reset = () => {
   form.password = '';
   confirmationPassword.value = '';
   accept.value = false;
+  errorMessage.message = '';
 };
 </script>

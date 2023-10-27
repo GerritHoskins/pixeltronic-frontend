@@ -1,13 +1,14 @@
 <template>
-  <div id="safeArea" style="min-height: 100vh" class="default-layout shadow-2 rounded-borders">
-    <navigation-component :nav-items="navItems" />
+  <div id="safeArea" style="min-height: 100vh" class="flex h-screen flex-col justify-between font-sans">
+    <navigation-component :nav-items="headerNavItems" />
+
     <main class="mb-auto">
       <router-view v-slot="{ Component }">
         <component :is="Component" :page-title="pageTitle" />
       </router-view>
     </main>
 
-    <footer-component />
+    <footer-component :nav-items="footerNavItems" />
   </div>
 </template>
 
@@ -17,12 +18,30 @@ import { computed } from 'vue';
 import NavigationComponent from '@/components/common/NavigationComponent.vue';
 import useNavigationRoutes from '@/composables/useNavigationRoutes';
 import FooterComponent from '@/components/common/FooterComponent.vue';
+import type { NavigationRouterLink } from '@/types/Navigation';
+import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
 const pageTitle = computed(() => {
   return router.currentRoute.value.meta?.contentTitle || router.currentRoute.value.meta?.title;
 });
-const { navItems } = useNavigationRoutes();
+const navigationItems = useNavigationRoutes();
+const { jwt } = useUserStore();
+
+const headerNavItems = computed((): Array<NavigationRouterLink> => {
+  return (
+    navigationItems.navItems.value.filter(
+      (route: NavigationRouterLink) => jwt && !route.isFooterNavItem && route.isHeaderNavItem
+    ) ?? []
+  );
+});
+const footerNavItems = computed((): Array<NavigationRouterLink> => {
+  return (
+    navigationItems.navItems.value.filter(
+      (route: NavigationRouterLink) => jwt && route.isFooterNavItem && !route.isHeaderNavItem
+    ) ?? []
+  );
+});
 </script>
 
 <style scoped>

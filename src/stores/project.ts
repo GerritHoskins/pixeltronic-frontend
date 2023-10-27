@@ -1,26 +1,8 @@
 import { defineStore } from 'pinia';
 import { axiosInstance } from '@/api/axiosInstance';
+import type { AddProjectRequestParams, GetProjectsRequestParams, Project } from '@/types/Project';
 
-export type Project = {
-  _id: string;
-  name: string;
-  desc: string;
-  file: string;
-  fileName?: string;
-};
-
-export type ProjectGetRequestParams = {
-  id: string;
-};
-
-export type ProjectAddRequestParams = {
-  name: string;
-  desc: string;
-  file: File | null;
-  fileName: string;
-};
-
-const API_BASE = '/project';
+const API_BASE = '/strapi/api/project';
 
 const getApiFilePath = (filename: string) => `${import.meta.env.VITE_API_BASE_URL}/assets/uploads/${filename}`;
 
@@ -47,7 +29,7 @@ export const useProjectStore = defineStore({
       }
     },
 
-    async get(params: ProjectGetRequestParams): Promise<void> {
+    async get(params: GetProjectsRequestParams): Promise<void> {
       try {
         const { data } = await axiosInstance.get(`${API_BASE}/get`, { params });
         this.projects.push(data);
@@ -57,7 +39,7 @@ export const useProjectStore = defineStore({
       }
     },
 
-    async add(data: ProjectAddRequestParams): Promise<void> {
+    async add(data: AddProjectRequestParams): Promise<void> {
       const formData = new FormData();
       formData.append('file', data.file as File);
       formData.append('fileName', data.fileName);
@@ -70,7 +52,7 @@ export const useProjectStore = defineStore({
             'Content-Type': 'multipart/form-data',
           },
         });
-        await this.all(); // Refresh the project list after adding a new project.
+        await this.all();
       } catch (error) {
         console.error('Error adding project:', error);
         // TODO: user-friendly error handling here.
