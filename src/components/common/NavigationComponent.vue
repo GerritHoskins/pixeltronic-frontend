@@ -9,22 +9,21 @@
       </div>
     </div>
     <div class="flex items-center space-x-4 leading-5 sm:space-x-6">
-      <template v-for="navItem in navItems" :key="navItem.name">
-        <router-link v-if="!navItem.action" :to="{ name: navItem.name }" :aria-label="`Navigate to ${navItem.label}`"
+      <template v-for="navItem in navItems" :key="navItem.path">
+        <router-link :to="{ name: navItem.name }" :aria-label="`Navigate to ${navItem.label}`"
           >{{ navItem.name }}
         </router-link>
-        <div @click="navItem.action">
-          {{ navItem.name }}
-        </div>
       </template>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import type { NavigationRouterLink } from '@/types/Navigation';
-
 defineProps<{
-  navItems: Array<NavigationRouterLink>;
+  navItems: Array<{
+    name: string;
+    path: string;
+    label: string;
+  }>;
 }>();
 </script>

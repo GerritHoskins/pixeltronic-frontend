@@ -1,9 +1,10 @@
-import '@/styles/app.css';
-
 import { createApp } from 'vue';
 import App from './App.vue';
 import { createPinia } from 'pinia';
 import router from './router';
+
+import './tailwind.css';
+import '@/scss/main.scss';
 
 import { createClient } from '@supabase/supabase-js';
 

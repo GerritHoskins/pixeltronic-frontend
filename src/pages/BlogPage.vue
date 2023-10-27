@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="blog-page">
+    <page-header />
     <div class="pb-6 pt-6">
       <h1
         class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:hidden sm:text-4xl sm:leading-10 md:text-6xl md:leading-14"
@@ -38,9 +39,7 @@
               <div class="space-y-3">
                 <div>
                   <h2 class="text-2xl font-bold leading-8 tracking-tight">
-                    <a
-                      class="text-gray-900 dark:text-gray-100"
-                      href="/blog/release-of-tailwind-nextjs-starter-blog-v2.0"
+                    <a class="text-gray-900 dark:text-gray-100" href="#"
                       >Release of Tailwind Nextjs Starter Blog v2.0</a
                     >
                   </h2>
@@ -120,7 +119,5 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  pageTitle: string;
-}>();
+import PageHeader from '@/components/common/PageHeader.vue';
 </script>

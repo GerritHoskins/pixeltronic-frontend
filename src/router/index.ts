@@ -31,7 +31,7 @@ const navigationRoutes = [
     name: 'login',
     component: () => import('@/pages/LoginPage.vue'),
     meta: generateMeta('DefaultLayout', 'Login', {
-      contentTitle: 'Login',
+      contentTitle: 'Back already?',
       requiresUnauth: true,
       headerNavigation: true,
     }),
@@ -44,11 +44,6 @@ const navigationRoutes = [
       contentTitle: 'Logout',
       requiresUnauth: true,
       headerNavigation: true,
-      action: async () => {
-        const userStore = useUserStore();
-        await userStore.logout();
-        router.push('/login');
-      },
     }),
   },
   {
@@ -110,8 +105,17 @@ router.beforeEach(async (to, from, next) => {
       return;
     }
   }
-
   const authenticated = await isAuthenticated();
+  if (to.path === '/logout' && isAuthenticated) {
+    const userStore = useUserStore();
+    userStore.logout();
+    next('/login');
+    return;
+  } else if (to.path !== '/login' && !isAuthenticated) {
+    next('/login');
+    return;
+  }
+
   if (to.matched.some(record => record.meta.requiresAuth) && !authenticated) {
     next('/login');
   } else if (to.matched.some(record => record.meta.requiresUnauth) && authenticated) {

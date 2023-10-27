@@ -1,20 +1,30 @@
 import { computed } from 'vue';
-import type { NavigationRouterLink } from '@/types/Navigation';
 import { allNavigationRoutes } from '@/router';
 
 const useNavigationRoutes = () => {
-  const navItems = computed((): Array<NavigationRouterLink> => {
-    if (!Array.isArray(allNavigationRoutes)) return [];
+  const navItems = computed(() => {
+    const items = {
+      header: [],
+      footer: [],
+    };
 
-    return allNavigationRoutes.map(route => {
-      return {
-        name: route.name || '',
-        label: route.meta?.title || route.name || '',
-        isFooterNavItem: route.meta?.footerNavigation || false,
-        isHeaderNavItem: route.meta?.headerNavigation || false,
-        action: route.meta?.action || undefined,
-      };
-    });
+    allNavigationRoutes
+      .filter(route => {
+        if (route.meta?.headerNavigation) {
+          return items.header.push(route);
+        }
+        if (route.meta?.footerNavigation) {
+          return items.footer.push(route);
+        }
+      })
+      .map(route => {
+        return {
+          name: route.name || '',
+          label: route.meta?.title || route.name || '',
+        };
+      });
+
+    return items;
   });
 
   return {

@@ -1,7 +1,4 @@
-import DefaultLayout from './DefaultLayout.vue';
-import AuthenticatedLayout from './AuthenticatedLayout.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout.vue';
 
-export default { DefaultLayout, AuthenticatedLayout } as Record<
-  string,
-  unknown
->;
+export default { DefaultLayout, AuthenticatedLayout } as Record<string, unknown>;

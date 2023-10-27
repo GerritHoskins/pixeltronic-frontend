@@ -2,32 +2,27 @@
   <div class="login-page">
     <div class="h-full flex flex-col justify-center items-center">
       <div class="flex flex-col max-w-[18rem] w-full">
-        <page-header>
-          <template #default>
-            {{ isRegisterMode ? 'Register' : 'Login' }}
-          </template>
-          <template #subtitle>
-            {{ isRegisterMode ? 'Sign up now!' : 'Hi, back already?' }}
-          </template>
-        </page-header>
-        <div>
+        <page-header />
+
+        <div class="flex flex-col gap-4">
           <div v-if="errorMessage.message" :class="`${errorMessage.color} ${errorMessage.textColor} p-2 mb-4 `">
             {{ errorMessage.message }}
           </div>
           <div class="flex flex-col gap-2" v-if="!isRegisterMode">
             <input v-model="form.email" placeholder="Email" />
             <input type="password" v-model="form.password" placeholder="Password" />
-            <button @click="handleSubmit">Login</button>
           </div>
 
           <div class="flex flex-col gap-2" v-if="isRegisterMode">
             <input v-model="form.email" placeholder="Email" />
             <input type="password" v-model="form.password" placeholder="Password" />
             <input type="password" v-model="confirmationPassword" placeholder="Confirm Password" />
-            <button class="rounded-none" @click="handleSubmit">Register</button>
           </div>
-
-          <div @click="onRegisterClick" class="mt-2 cursor-pointer prose max-w-none text-gray-500 dark:text-gray-400">
+          <button @click="handleSubmit">{{ isRegisterMode ? 'Register' : 'Login' }}</button>
+          <div
+            @click="onRegisterClick"
+            class="mt-2 cursor-pointer prose max-w-none text-sm text-center text-gray-500 dark:text-gray-400"
+          >
             {{ isRegisterMode ? 'Already have an Account?' : 'Creat a new Account?' }}
           </div>
         </div>
