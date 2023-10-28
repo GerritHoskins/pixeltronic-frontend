@@ -7,18 +7,15 @@
         <linked-in-icon :svg-props="iconSettings.linkedInIcon" />
       </div>
 
-      <div class="mb-2 flex space-x-2 text-gray-500 dark:text-gray-400">
+      <div class="mb-2 flex space-x-2 text-gray-500 dark:text-gray-400 text-xs">
         <router-link
-          class="text-sm"
           v-for="navItem in navItems"
           :key="navItem.name"
           :to="{ name: navItem.name }"
           :aria-label="`Navigate to ${navItem.label}`"
           >{{ navItem.meta?.contentTitle.toLowerCase() }}
         </router-link>
-        <a class="text-sm" target="_blank" rel="noopener noreferrer" href="https://pixeltronic.dev"
-          >pixeltronic.dev ©2023</a
-        >
+        <a target="_blank" rel="noopener noreferrer" href="https://pixeltronic.dev">pixeltronic.dev ©2023</a>
       </div>
     </div>
   </footer>

@@ -1,10 +1,12 @@
 <template>
   <div id="safeArea" class="flex h-screen default-layout flex-col justify-between font-sans">
-    <main class="mb-auto">
-      <slot />
-    </main>
+    <div>
+      <main class="mb-auto">
+        <slot />
+      </main>
 
-    <footer-component :nav-items="navItems.footer" />
+      <footer-component :nav-items="navItems.footer" />
+    </div>
   </div>
 </template>
 
