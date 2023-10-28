@@ -1,17 +1,15 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { createRouter, createWebHistory, useRouter } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import useStore from '@/stores/store';
 import { Preferences } from '@capacitor/preferences';
 import Error404Page from '@/pages/Error404Page.vue';
 import { useUserStore } from '@/stores/user';
 
-// Default meta configuration
 const defaultMeta = {
   headerNavigation: false,
   footerNavigation: false,
 };
 
-// Common meta generator
 const generateMeta = (layout: string, title: string, options = {}) => ({
   ...defaultMeta,
   layout,
@@ -29,7 +27,7 @@ const navigationRoutes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/pages/LoginPage.vue'),
+    component: () => import('@/pages/LoginRegisterPage.vue'),
     meta: generateMeta('DefaultLayout', 'Login', {
       contentTitle: 'Back already?',
       requiresUnauth: true,
@@ -37,9 +35,19 @@ const navigationRoutes = [
     }),
   },
   {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/pages/LoginRegisterPage.vue'),
+    meta: generateMeta('DefaultLayout', 'Register', {
+      contentTitle: 'What is one more password?',
+      requiresUnauth: true,
+      headerNavigation: false,
+    }),
+  },
+  {
     path: '/logout',
     name: 'logout',
-    component: () => import('@/pages/LoginPage.vue'),
+    component: () => import('@/pages/LoginRegisterPage.vue'),
     meta: generateMeta('DefaultLayout', 'Logout', {
       contentTitle: 'Logout',
       requiresUnauth: true,

@@ -1,6 +1,6 @@
 <template>
-  <div id="safeArea" class="flex h-screen default-layout flex-col justify-between font-sans">
-    <div>
+  <div id="safeArea" class="flex h-screen default-layout flex-col justify-evenly font-sans">
+    <div class="flex flex-col gap-6">
       <main class="mb-auto">
         <slot />
       </main>

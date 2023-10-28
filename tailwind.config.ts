@@ -13,7 +13,7 @@ const config: Config = defineTailwindConfig({
         sans: ['Sora', ...fontFamily.sans],
       },
       colors: {
-        primary: colors.cyan,
+        primary: '#35869c',
         gray: colors.gray,
       },
     },
