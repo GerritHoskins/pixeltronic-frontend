@@ -1,9 +1,7 @@
 <template>
   <div id="safeArea" class="flex h-screen default-layout flex-col justify-between font-sans">
     <main class="mb-auto">
-      <router-view v-slot="{ Component }">
-        <component :is="Component" />
-      </router-view>
+      <slot />
     </main>
 
     <footer-component :nav-items="navItems.footer" />

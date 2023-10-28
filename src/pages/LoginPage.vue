@@ -1,7 +1,7 @@
 <template>
   <div class="login-page pt-[13rem]">
     <div class="h-full flex flex-col justify-center items-center">
-      <div class="flex flex-col max-w-[18rem] w-full">
+      <div class="flex flex-col max-w-[26rem] w-full">
         <div class="my-3">
           <brand-logo />
           <p class="text-lg leading-7 pt-2 pb-4 text-gray-500 dark:text-gray-400">Back already?</p>
@@ -21,7 +21,7 @@
             <input type="password" v-model="form.password" placeholder="Password" />
             <input type="password" v-model="confirmationPassword" placeholder="Confirm Password" />
           </div>
-          <button @click="handleSubmit">{{ isRegisterMode ? 'Register' : 'Login' }}</button>
+          <button class="theme-button" @click="handleSubmit">{{ isRegisterMode ? 'Register' : 'Login' }}</button>
           <div
             @click="onRegisterClick"
             class="mt-2 cursor-pointer prose max-w-none text-sm text-center text-gray-500 dark:text-gray-400"

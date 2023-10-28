@@ -1,11 +1,9 @@
 <template>
-  <div id="safeArea" class="authenticated-layout flex h-screen flex-col justify-between font-sans">
+  <div id="safeArea" class="two-column-layout flex h-screen flex-col justify-between font-sans">
     <navigation-component :nav-items="navItems.header" show-items />
 
     <main class="mb-auto">
-      <router-view v-slot="{ Component }">
-        <component :is="Component" />
-      </router-view>
+      <slot />
     </main>
 
     <footer-component :nav-items="navItems.footer" />
@@ -13,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user';
 import useNavigationRoutes from '@/composables/useNavigationRoutes';
 import FooterComponent from '@/components/common/FooterComponent.vue';
 import NavigationComponent from '@/components/common/NavigationComponent.vue';

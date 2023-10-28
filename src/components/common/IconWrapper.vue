@@ -4,12 +4,11 @@
     <slot />
   </a>
 </template>
+
 <script setup lang="ts">
+import type { Icon } from '@/types/Icon';
+
 defineProps<{
-  svgProps?: {
-    href: string;
-    type: string;
-    label: string;
-  };
+  svgProps?: Icon;
 }>();
 </script>

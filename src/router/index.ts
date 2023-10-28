@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, useRouter } from 'vue-router';
 import useStore from '@/stores/store';
 import { Preferences } from '@capacitor/preferences';
 import Error404Page from '@/pages/Error404Page.vue';
@@ -33,7 +33,7 @@ const navigationRoutes = [
     meta: generateMeta('DefaultLayout', 'Login', {
       contentTitle: 'Back already?',
       requiresUnauth: true,
-      headerNavigation: true,
+      headerNavigation: false,
     }),
   },
   {
@@ -44,6 +44,12 @@ const navigationRoutes = [
       contentTitle: 'Logout',
       requiresUnauth: true,
       headerNavigation: true,
+      clickAction: {
+        action: async () => {
+          const store = useUserStore();
+          await store.logout();
+        },
+      },
     }),
   },
   {
@@ -71,6 +77,7 @@ const navigationRoutes = [
     name: 'privacy-policy',
     component: () => import('@/pages/PrivacyPolicyPage.vue'),
     meta: generateMeta('AuthenticatedLayout', 'Privacy Policy', {
+      contentTitle: 'Privacy Policy',
       requiresAuth: false,
       footerNavigation: true,
     }),
@@ -80,12 +87,14 @@ const navigationRoutes = [
     name: 'terms-of-use',
     component: () => import('@/pages/TermsOfUsePage.vue'),
     meta: generateMeta('AuthenticatedLayout', 'Terms of Use', {
+      contentTitle: 'Terms of Use',
       requiresAuth: false,
       footerNavigation: true,
     }),
   },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: Error404Page },
 ];
+
 export const allNavigationRoutes = navigationRoutes;
 
 const router = createRouter({
@@ -106,16 +115,6 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   const authenticated = await isAuthenticated();
-  if (to.path === '/logout' && isAuthenticated) {
-    const userStore = useUserStore();
-    userStore.logout();
-    next('/login');
-    return;
-  } else if (to.path !== '/login' && !isAuthenticated) {
-    next('/login');
-    return;
-  }
-
   if (to.matched.some(record => record.meta.requiresAuth) && !authenticated) {
     next('/login');
   } else if (to.matched.some(record => record.meta.requiresUnauth) && authenticated) {

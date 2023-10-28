@@ -2,23 +2,23 @@
   <footer>
     <div class="mt-16 flex flex-col items-center">
       <div class="mb-3 flex space-x-4">
-        <mail-icon />
-        <github-icon />
-        <linked-in-icon />
+        <mail-icon :svg-props="iconSettings.mailIcon" />
+        <github-icon :svg-props="iconSettings.githubIcon" />
+        <linked-in-icon :svg-props="iconSettings.linkedInIcon" />
       </div>
 
-      <div class="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
+      <div class="mb-2 flex space-x-2 text-gray-500 dark:text-gray-400">
         <router-link
+          class="text-sm"
           v-for="navItem in navItems"
           :key="navItem.name"
           :to="{ name: navItem.name }"
           :aria-label="`Navigate to ${navItem.label}`"
-          >{{ navItem.name }}
+          >{{ navItem.meta?.contentTitle.toLowerCase() }}
         </router-link>
-      </div>
-
-      <div class="mb-8 text-sm text-gray-500 dark:text-gray-400">
-        <a target="_blank" rel="noopener noreferrer" href="https://pixeltronic.dev">©2023 pixeltronic.dev</a>
+        <a class="text-sm" target="_blank" rel="noopener noreferrer" href="https://pixeltronic.dev"
+          >pixeltronic.dev ©2023</a
+        >
       </div>
     </div>
   </footer>
@@ -33,4 +33,10 @@ import LinkedInIcon from '@/components/common/icons/LinkedInIcon.vue';
 defineProps<{
   navItems: Array<NavigationRouterLink>;
 }>();
+
+const iconSettings = {
+  mailIcon: { width: 20, height: 20, href: 'mailto:gerrit.hoskins@pixeltronic.dev' },
+  githubIcon: { width: 18, height: 18, href: 'https://github.com/GerritHoskins' },
+  linkedInIcon: { width: 18, height: 18, href: 'https://linkedin.com/gerrit-hoskins' },
+};
 </script>

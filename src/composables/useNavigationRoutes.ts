@@ -21,9 +21,15 @@ const useNavigationRoutes = () => {
         return {
           name: route.name || '',
           label: route.meta?.title || route.name || '',
+          clickAction: route.meta?.clickAction?.action
+            ? {
+                action: route.meta?.clickAction?.action || undefined,
+              }
+            : undefined,
         };
       });
 
+    items.header.reverse();
     return items;
   });
 

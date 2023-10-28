@@ -5,6 +5,7 @@ import { axiosInstance, setRequestInterceptor } from '@/api/axiosInstance';
 import { useCrypto } from '@/composables/useCrypto';
 import type { User, UserDetails, AuthRequestParams } from '@/types/User';
 import { supabase } from '@/main';
+import router from '@/router';
 
 export const useUserStore = defineStore({
   id: 'user',
@@ -33,7 +34,10 @@ export const useUserStore = defineStore({
           email: userData.email,
           password: userData.password,
         });
-        if (error) throw error;
+        if (error) {
+          console.log(error);
+          return;
+        }
       } catch (error) {
         console.error('Error:', error);
       }
@@ -45,7 +49,10 @@ export const useUserStore = defineStore({
           email: userData.email,
           password: userData.password,
         });
-        if (error) throw error;
+        if (error) {
+          console.log(error);
+          return;
+        }
       } catch (error) {
         console.error('Error:', error);
       }
@@ -79,10 +86,14 @@ export const useUserStore = defineStore({
     async logout() {
       try {
         const { error } = await supabase.auth.signOut();
-        if (error) throw error;
+        if (error) {
+          console.log(error);
+          return;
+        }
         await Preferences.clear();
         this.user = {} as UserDetails;
         this.jwt = '';
+        await router.push('/login');
       } catch (error) {
         console.error('Logout failed: ', error);
       }
