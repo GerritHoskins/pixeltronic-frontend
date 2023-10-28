@@ -1,14 +1,14 @@
 <template>
   <footer>
-    <div class="mt-16 flex flex-col items-center">
-      <div class="mb-3 flex flex-row items-center space-x-4">
+    <div class="mt-8 flex flex-col items-center">
+      <div class="mb-2 flex flex-row items-center space-x-4">
         <github-icon :svg-props="iconSettings.githubIcon" />
         <linked-in-icon :svg-props="iconSettings.linkedInIcon" />
 
         <mail-icon :svg-props="iconSettings.mailIcon" />
       </div>
 
-      <div class="mb-2 flex space-x-2 text-gray-500 dark:text-gray-400 text-xs">
+      <div class="mb-1 flex space-x-2 text-gray-500 dark:text-gray-400 text-xs">
         <router-link
           v-for="navItem in navItems"
           :key="navItem.name"
@@ -16,6 +16,9 @@
           :aria-label="`Navigate to ${navItem.label}`"
           >{{ navItem.meta?.contentTitle }}
         </router-link>
+      </div>
+
+      <div class="mb-1 flex space-x-2 text-gray-500 dark:text-gray-400 text-[8px]">
         <a target="_blank" rel="noopener noreferrer" href="https://pixeltronic.dev">pixeltronic.dev ©2023</a>
       </div>
     </div>

@@ -17,4 +17,11 @@ type AddProjectRequestParams = {
   fileName: string;
 };
 
-export type { Project, GetProjectsRequestParams, AddProjectRequestParams };
+type ProjectPost = {
+  href: string;
+  src: string;
+  title: string;
+  description: string;
+};
+
+export type { Project, GetProjectsRequestParams, AddProjectRequestParams, ProjectPost };

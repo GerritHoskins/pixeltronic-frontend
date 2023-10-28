@@ -1,6 +1,5 @@
 <template>
   <div class="blog-page">
-    <div class="pb-6 pt-6" />
     <div class="flex sm:space-x-24">
       <blog-entries :entries="entries" />
       <blog-tags :tags="countedTags" />

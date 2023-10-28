@@ -1,5 +1,5 @@
 <template>
-  <icon-wrapper>
+  <icon-wrapper class="rounded-lg block border border-primary overflow-hidden shadow-logo-shadow">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       :width="`${svgProps?.width}pt` || '32px'"

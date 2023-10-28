@@ -1,6 +1,4 @@
 import type { Config } from 'tailwindcss';
-import colors from 'tailwindcss/colors';
-
 import { fontFamily } from 'tailwindcss/defaultTheme';
 import defineTailwindConfig from './src/config';
 
@@ -25,6 +23,9 @@ const config: Config = defineTailwindConfig({
           800: '#bfecf5',
           900: '#dff6fa',
         },
+      },
+      boxShadow: {
+        'logo-shadow': '-15px -16px #80d9eb',
       },
     },
   },

@@ -10,5 +10,6 @@ import type { Icon } from '@/types/Icon';
 
 defineProps<{
   svgProps?: Icon;
+  isToggled?: boolean;
 }>();
 </script>

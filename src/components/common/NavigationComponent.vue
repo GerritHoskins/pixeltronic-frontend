@@ -11,7 +11,7 @@
         </router-link>
       </template>
       <button aria-label="Toggle Dark Mode" @click="toggleDarkMode">
-        <dark-mode-icon :svg-props="{ width: 20, height: 20 }" />
+        <dark-mode-icon :svg-props="{ width: 20, height: 20 }" :is-toggled="toggleIcon" />
       </button>
     </div>
   </header>
@@ -21,6 +21,7 @@
 import BrandLogo from '@/components/common/BrandLogo.vue';
 import { useDark, useToggle } from '@vueuse/core/index';
 import DarkModeIcon from '@/components/common/icons/DarkModeIcon.vue';
+import { ref } from 'vue';
 
 defineProps<{
   navItems: Array<{
@@ -37,8 +38,11 @@ defineProps<{
   }>;
   showItems?: boolean;
 }>();
-
+const toggleIcon = ref(false);
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
-const toggleDarkMode = () => toggleDark();
+const toggleDarkMode = () => {
+  toggleIcon.value = !toggleIcon.value;
+  toggleDark();
+};
 </script>
