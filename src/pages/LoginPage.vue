@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page pt-[13rem]">
+  <div class="login-page pt-[11rem]">
     <div class="h-full flex flex-col justify-center items-center">
       <div class="flex flex-col max-w-[26rem] w-full">
         <div class="my-3">

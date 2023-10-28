@@ -15,7 +15,7 @@ watch(
   route,
   to => {
     if (to.meta.layout) {
-      import(`./${capitalizeFirstLetter(to.meta.layout)}.vue`).then(module => {
+      import(`../../layouts/${capitalizeFirstLetter(to.meta.layout)}.vue`).then(module => {
         layoutComponent.value = module.default;
       });
     }

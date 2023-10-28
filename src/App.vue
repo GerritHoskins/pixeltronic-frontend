@@ -7,5 +7,5 @@
 </template>
 
 <script setup lang="ts">
-import DynamicLayout from '@/layouts/DynamicLayout.vue';
+import DynamicLayout from '@/components/common/DynamicLayout.vue';
 </script>
