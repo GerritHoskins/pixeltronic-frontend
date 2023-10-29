@@ -75,7 +75,7 @@ const navigationRoutes = [
     name: 'project',
     component: () => import('@/pages/ProjectPage.vue'),
     meta: generateMeta('AuthenticatedLayout', 'Projects', {
-      contentTitle: 'Stuff I built',
+      contentTitle: 'My little creations',
       requiresAuth: true,
       headerNavigation: true,
     }),

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col px-[5rem] gap-4">
+  <div class="flex flex-col px-4 gap-4">
     <div v-if="errorMessage.message" :class="`${errorMessage.color} ${errorMessage.textColor} p-2 mb-4 `">
       {{ errorMessage.message }}
     </div>
@@ -13,7 +13,7 @@
       <input type="password" v-model="form.password" placeholder="Password" />
       <input type="password" v-model="confirmationPassword" placeholder="Confirm Password" />
     </div>
-    <button class="theme-button bg-primary-500" @click="handleSubmit">{{ registerMode ? 'Register' : 'Login' }}</button>
+    <button class="theme-button" @click="handleSubmit">{{ registerMode ? 'Register' : 'Login' }}</button>
     <div
       @click="onRegisterClick"
       class="mt-2 cursor-pointer prose max-w-none text-sm text-center text-gray-500 dark:text-gray-400"

@@ -1,7 +1,7 @@
 <template>
   <div class="login-register-page">
     <div class="h-full flex flex-col justify-center items-center">
-      <div class="flex flex-col max-w-[26rem] w-full">
+      <div class="flex flex-col sm:max-w-[26rem] w-full">
         <div class="py-8">
           <brand-logo />
           <!-- <p class="text-lg leading-7 pt-2 pb-4 font-bold text-gray-500 dark:text-gray-400">

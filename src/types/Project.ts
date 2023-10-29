@@ -18,10 +18,12 @@ type AddProjectRequestParams = {
 };
 
 type ProjectPost = {
-  href: string;
-  src: string;
+  link: string;
+  image: string;
   title: string;
   description: string;
+  status?: string;
+  postedAt?: string;
 };
 
 export type { Project, GetProjectsRequestParams, AddProjectRequestParams, ProjectPost };

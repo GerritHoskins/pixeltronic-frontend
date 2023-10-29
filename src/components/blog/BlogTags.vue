@@ -19,10 +19,9 @@
 </template>
 
 <script setup lang="ts">
+import type { Tag } from '@/types/Blog';
+
 defineProps<{
-  tags: Array<{
-    label: string;
-    count: number;
-  }>;
+  tags: Array<Tag>;
 }>();
 </script>

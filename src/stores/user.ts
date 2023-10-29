@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { Preferences } from '@capacitor/preferences';
-import { axiosInstance, setRequestInterceptor } from '@/api/axiosInstance';
+import axiosInstance from '@/api/axiosInstance';
 
 import { useCrypto } from '@/composables/useCrypto';
 import type { User, UserDetails, AuthRequestParams } from '@/types/User';
@@ -20,7 +20,7 @@ export const useUserStore = defineStore({
       try {
         const jwtData = await Preferences.get({ key: 'jwt' });
 
-        if (jwtData.value) setRequestInterceptor(jwtData.value);
+        // if (jwtData.value) setRequestInterceptor(jwtData.value);
 
         if (jwtData.value) this.jwt = jwtData.value;
       } catch (error) {
