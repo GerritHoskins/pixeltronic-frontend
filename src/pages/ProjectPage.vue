@@ -36,7 +36,7 @@ const getApiFilePath = (filename: string) => `${import.meta.env.VITE_API_BASE_UR
 watch(projects, newVal => {
   newVal?.data.forEach(project => {
     projectPosts.push({
-      link: `${import.meta.env.VITE_API_BASE_URL}/${project.id}`,
+      link: project.attributes.link,
       image: project.attributes?.image?.data?.attributes?.url
         ? getApiFilePath(project.attributes.image.data.attributes.url)
         : '',

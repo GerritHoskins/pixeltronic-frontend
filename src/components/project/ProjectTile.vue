@@ -14,13 +14,9 @@
       /></a>
       <div class="p-6">
         <h2 class="mb-3 text-2xl font-bold leading-8 tracking-tight">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.google.com"
-            aria-label="Link to A Search Engine"
-            >{{ project.title }}</a
-          >
+          <a target="_blank" rel="noopener noreferrer" :href="project.link" :aria-label="project.title">{{
+            project.title
+          }}</a>
         </h2>
         <p class="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">
           {{ project.description }}

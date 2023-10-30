@@ -22,7 +22,7 @@
         >Passwords do not match.</validation-error
       >
     </form>
-
+    <validation-error v-if="generalError">Something went wrong.</validation-error>
     <button
       class="theme-button"
       :class="{ 'cursor-not-allowed': !passwordsFilled && !emailValidation }"
@@ -54,7 +54,7 @@ const props = defineProps<{
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
-const errorMessage = ref({ message: '' });
+const generalError = ref(false);
 
 const rules = [
   { message: 'One lowercase letter required.', regex: /[a-z]+/ },
@@ -104,7 +104,6 @@ const reset = () => {
   email.value = '';
   password.value = '';
   confirmPassword.value = '';
-  errorMessage.value.message = '';
 };
 
 const handleSubmit = async () => {
@@ -112,10 +111,10 @@ const handleSubmit = async () => {
     try {
       await handleLoginOrRegister();
     } catch (error) {
-      errorMessage.value.message = 'Something went wrong.';
+      generalError.value = true;
     }
   } else {
-    errorMessage.value.message = 'Something went wrong.';
+    generalError.value = true;
   }
 };
 
