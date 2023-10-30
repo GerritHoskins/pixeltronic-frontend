@@ -32,10 +32,6 @@ import type { BlogEntry, Tag } from '@/types/Blog';
 import useApi from '@/composables/useApi';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
 
-// API fetch hooks
-//const { blogPosts, error: blogError, fetch: fetchBlogEntries } = fetchBlogPosts();
-//const { tags, error: tagError, fetch: fetchBlogTags } = fetchTags();
-
 const { data: blogPosts, error: blogError, fetchBlogPosts } = useApi();
 const { data: tags, error: tagError, fetchTags } = useApi();
 

@@ -1,21 +1,11 @@
 <template>
-  <div
-    class="fullscreen bg-primary text-secondary text-center q-pa-md flex flex-center"
-  >
+  <div class="h-screen flex-col text-center flex justify-evenly items-center">
     <div>
-      <div style="font-size: 30vh">404</div>
-
-      <div class="text-h2" style="opacity: 0.4">Oops. Nothing here...</div>
-
-      <router-link
-        class="q-mt-xl"
-        color="secondary"
-        text-color="secondary"
-        unelevated
-        to="/"
-        label="Go Home"
-        no-caps
-      />
+      <div class="text-9xl text-primary-500">404</div>
+      <div class="text-5xl">Whoops...</div>
     </div>
+
+    <router-link to="/">Go Back</router-link>
   </div>
 </template>
+<script setup lang="ts"></script>
