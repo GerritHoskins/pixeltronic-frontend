@@ -14,12 +14,12 @@
           :key="navItem.name"
           :to="{ name: navItem.name }"
           :aria-label="`Navigate to ${navItem.label}`"
-          >{{ navItem.meta?.contentTitle }}
+          >{{ navItem.contentTitle }}
         </router-link>
       </div>
 
-      <div class="mb-1 flex space-x-2 text-gray-500 dark:text-gray-400 text-[8px]">
-        <a target="_blank" rel="noopener noreferrer" href="https://pixeltronic.dev">pixeltronic.dev ©2023</a>
+      <div class="mb-1 flex space-x-2 text-gray-500 dark:text-gray-400 text-xs">
+        <a target="_blank" rel="noopener noreferrer" href="https://pixeltronic.dev">©2023</a>
       </div>
     </div>
   </footer>
