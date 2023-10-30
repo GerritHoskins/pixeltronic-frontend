@@ -1,0 +1,106 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "attributes": {
+        "title": "Strapi CMS Article",
+        "description": "description text",
+        "url": "https://pixeltronic.dev",
+        "link": "https://pixeltronic.dev",
+        "createdAt": "2023-10-19T11:57:53.956Z",
+        "updatedAt": "2023-10-26T10:58:15.426Z",
+        "publishedAt": "2023-10-19T11:57:56.307Z",
+        "aid": "1",
+        "authors": [
+          {
+            "name": "Gerrit Hoskins",
+            "avatar": "/static/images/avatar.png",
+            "occupation": "Pixel pusher",
+            "company": "pixeltronic.dev",
+            "email": "gerrit.hoskins@pixeltronic.dev",
+            "twitter": "https://twitter.com/Twitter",
+            "linkedin": "https://www.linkedin.com/gerrit-hoskins",
+            "github": "https://github.com/GerritHoskins"
+          }
+        ],
+        "image": {
+          "data": {
+            "id": 1,
+            "attributes": {
+              "name": "technology-1283624_640.jpg",
+              "alternativeText": "jquery code on a black screen",
+              "caption": "jquery code on a black screen",
+              "width": 640,
+              "height": 360,
+              "formats": {
+                "thumbnail": {
+                  "name": "thumbnail_technology-1283624_640.jpg",
+                  "hash": "thumbnail_technology_1283624_640_8201bc7ac0",
+                  "ext": ".jpg",
+                  "mime": "image/jpeg",
+                  "path": null,
+                  "width": 245,
+                  "height": 138,
+                  "size": 9.82,
+                  "url": "/uploads/thumbnail_technology_1283624_640_8201bc7ac0.jpg"
+                },
+                "small": {
+                  "name": "small_technology-1283624_640.jpg",
+                  "hash": "small_technology_1283624_640_8201bc7ac0",
+                  "ext": ".jpg",
+                  "mime": "image/jpeg",
+                  "path": null,
+                  "width": 500,
+                  "height": 281,
+                  "size": 28.88,
+                  "url": "/uploads/small_technology_1283624_640_8201bc7ac0.jpg"
+                }
+              },
+              "hash": "technology_1283624_640_8201bc7ac0",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "size": 40.42,
+              "url": "/uploads/technology_1283624_640_8201bc7ac0.jpg",
+              "previewUrl": null,
+              "provider": "local",
+              "provider_metadata": null,
+              "createdAt": "2023-10-19T12:05:08.070Z",
+              "updatedAt": "2023-10-19T14:43:10.528Z"
+            }
+          }
+        },
+        "tags": {
+          "data": [
+            {
+              "id": 3,
+              "attributes": {
+                "name": "frameworks",
+                "createdAt": "2023-10-26T10:56:40.478Z",
+                "updatedAt": "2023-10-26T10:56:41.844Z",
+                "publishedAt": "2023-10-26T10:56:41.841Z"
+              }
+            },
+            {
+              "id": 2,
+              "attributes": {
+                "name": "code",
+                "createdAt": "2023-10-26T10:56:29.050Z",
+                "updatedAt": "2023-10-26T10:58:32.179Z",
+                "publishedAt": "2023-10-26T10:56:31.712Z"
+              }
+            },
+            {
+              "id": 4,
+              "attributes": {
+                "name": "github",
+                "createdAt": "2023-10-26T10:56:56.493Z",
+                "updatedAt": "2023-10-26T10:56:59.273Z",
+                "publishedAt": "2023-10-26T10:56:59.269Z"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

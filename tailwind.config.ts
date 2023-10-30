@@ -27,6 +27,9 @@ const config: Config = defineTailwindConfig({
       boxShadow: {
         'logo-shadow': '-15px -16px #80d9eb',
       },
+      animation: {
+        'pulse-slow': 'pulse 1s ease-in-out 1',
+      },
     },
   },
   plugins: [],

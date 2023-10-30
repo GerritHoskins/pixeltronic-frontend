@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-row w-full h-[490px] flex-wrap overflow-auto rounded bg-gray-50 shadow-md dark:bg-gray-800/70 dark:shadow-gray-700/40 sm:flex"
+    class="flex flex-row w-full max-h-[590px] flex-wrap overflow-auto rounded bg-gray-50 shadow-md dark:bg-gray-800/70 dark:shadow-gray-700/40 sm:flex"
   >
     <div class="h-full overflow-hidden rounded-md">
       <a target="_blank" rel="noopener noreferrer" :href="project.link" aria-label="Link to A Search Engine"

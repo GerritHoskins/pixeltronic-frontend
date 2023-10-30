@@ -9,17 +9,14 @@ interface NavigationRouterLink {
 interface NavigationRoute {
   name: string;
   path: string;
+  label: string;
   meta: {
-    layout: string;
     title: string;
-    headerNavigation: boolean;
-    contentTitle?: string;
-    footerNavigation?: boolean;
-    requiresUnauth?: boolean;
-    requiresAuth?: boolean;
+    contentTitle: string;
+    clickAction?: {
+      action: () => Promise<void> | undefined;
+    };
   };
-
-  component: () => Promise<unknown>;
 }
 
 export type { NavigationRouterLink, NavigationRoute };

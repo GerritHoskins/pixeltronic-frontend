@@ -19,30 +19,21 @@
 
 <script setup lang="ts">
 import BrandLogo from '@/components/common/BrandLogo.vue';
-import { useDark, useToggle } from '@vueuse/core/index';
 import DarkModeIcon from '@/components/common/icons/DarkModeIcon.vue';
 import { ref } from 'vue';
+import type { NavigationRoute } from '@/types/Navigation';
 
 defineProps<{
-  navItems: Array<{
-    name: string;
-    path: string;
-    label: string;
-    meta: {
-      title: string;
-      contentTitle: string;
-      clickAction?: {
-        action: () => Promise<void> | undefined;
-      };
-    };
-  }>;
+  navItems: NavigationRoute[];
   showItems?: boolean;
 }>();
+
 const toggleIcon = ref(false);
-const isDark = useDark();
-const toggleDark = useToggle(isDark);
 const toggleDarkMode = () => {
   toggleIcon.value = !toggleIcon.value;
-  toggleDark();
+  const htmlRootEl = document.getElementsByTagName('html')[0];
+  if (htmlRootEl) {
+    htmlRootEl.classList.toggle('dark');
+  }
 };
 </script>

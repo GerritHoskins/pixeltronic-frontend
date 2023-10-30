@@ -1,19 +1,36 @@
 <template>
   <div class="flex flex-col px-4 gap-4">
-    <div v-if="errorMessage.message" :class="`${errorMessage.color} ${errorMessage.textColor} p-2 mb-4 `">
-      {{ errorMessage.message }}
-    </div>
-    <div class="flex flex-col gap-2" v-if="!registerMode">
-      <input v-model="form.email" placeholder="Email" />
-      <input type="password" v-model="form.password" placeholder="Password" />
-    </div>
+    <form class="flex flex-col gap-2" @submit.prevent="handleSubmit">
+      <input v-model.lazy="email" placeholder="Email" autocomplete="email" />
+      <validation-error v-if="!emailValidation && email !== ''">Please use an valid email.</validation-error>
 
-    <div class="flex flex-col gap-2" v-if="registerMode">
-      <input v-model="form.email" placeholder="Email" />
-      <input type="password" v-model="form.password" placeholder="Password" />
-      <input type="password" v-model="confirmationPassword" placeholder="Confirm Password" />
-    </div>
-    <button class="theme-button" @click="handleSubmit">{{ registerMode ? 'Register' : 'Login' }}</button>
+      <input type="password" v-model.lazy="password" autocomplete="current-password" placeholder="Password" />
+      <validation-error v-if="!passwordValidation.valid && passwordsFilled">
+        <p v-for="err in passwordValidation.errors" :key="err">
+          {{ err }}
+        </p></validation-error
+      >
+
+      <input
+        v-if="registerMode"
+        type="password"
+        v-model.lazy="confirmPassword"
+        autocomplete="new-password"
+        placeholder="Confirm Password"
+      />
+      <validation-error v-if="registerMode && passwordMismatch && passwordsFilled"
+        >Passwords do not match.</validation-error
+      >
+    </form>
+
+    <button
+      class="theme-button"
+      :class="{ 'cursor-not-allowed': !passwordsFilled && !emailValidation }"
+      :disabled="!passwordsFilled && !emailValidation"
+      @click="handleSubmit"
+    >
+      {{ registerMode ? 'Register' : 'Login' }}
+    </button>
     <div
       @click="onRegisterClick"
       class="mt-2 cursor-pointer prose max-w-none text-sm text-center text-gray-500 dark:text-gray-400"
@@ -24,73 +41,94 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
+import router from '@/router';
+import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import { useRoute, useRouter } from 'vue-router';
+import ValidationError from '@/components/common/ValidationError.vue';
 
 const props = defineProps<{
   registerMode: boolean;
 }>();
 
-const authStore = useUserStore();
-const router = useRouter();
-const route = useRoute();
+const email = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const errorMessage = ref({ message: '' });
 
-const confirmationPassword = ref('');
-const accept = ref(false);
+const rules = [
+  { message: 'One lowercase letter required.', regex: /[a-z]+/ },
+  { message: '6 characters minimum.', regex: /.{8,}/ },
+  { message: 'One number required.', regex: /[0-9]+/ },
+];
 
-const form = reactive({
-  email: '',
-  password: '',
+const passwordsFilled = computed(() => {
+  return props.registerMode ? password.value !== '' && confirmPassword.value !== '' : password.value !== '';
 });
 
+const passwordMismatch = computed(() => {
+  if (!props.registerMode) return false;
+  if (passwordsFilled.value) {
+    return password.value !== confirmPassword.value;
+  } else {
+    return false;
+  }
+});
+
+const passwordValidation = computed(() => {
+  let errors = [];
+  for (let condition of rules) {
+    if (!condition.regex.test(password.value)) {
+      errors.push(condition.message);
+    }
+  }
+  if (errors.length === 0) {
+    return { valid: true, errors };
+  } else {
+    return { valid: false, errors };
+  }
+});
+
+const emailValidation = computed(() => {
+  const emailPattern = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/);
+  return emailPattern.test(email.value);
+});
+
+const route = useRoute();
 const onRegisterClick = () => {
   reset();
   route.path === '/register' ? router.push('/login') : router.push('/register');
 };
 
-const errorMessage = reactive({
-  color: '',
-  textColor: '',
-  message: '',
-});
-
-const showError = (message: string) => {
-  errorMessage.message = message;
-  errorMessage.color = 'bg-red-500';
-  errorMessage.textColor = 'text-white';
-};
-
-const handleLoginOrRegister = async () => {
-  if (props.registerMode) {
-    await authStore.register({
-      email: form.email,
-      password: form.password,
-    });
-  } else {
-    await authStore.login({ email: form.email, password: form.password });
-  }
-  reset();
+const reset = () => {
+  email.value = '';
+  password.value = '';
+  confirmPassword.value = '';
+  errorMessage.value.message = '';
 };
 
 const handleSubmit = async () => {
-  if (props.registerMode && form.password !== confirmationPassword.value) {
-    showError('Passwords do not match.');
-    return;
-  }
-
-  try {
-    await handleLoginOrRegister();
-  } catch (error) {
-    showError(error ? error.toString() : 'Something went wrong.');
+  if (passwordsFilled.value && !passwordMismatch.value && passwordValidation.value.valid) {
+    try {
+      await handleLoginOrRegister();
+    } catch (error) {
+      errorMessage.value.message = 'Something went wrong.';
+    }
+  } else {
+    errorMessage.value.message = 'Something went wrong.';
   }
 };
 
-const reset = () => {
-  form.email = '';
-  form.password = '';
-  confirmationPassword.value = '';
-  accept.value = false;
-  errorMessage.message = '';
+const authStore = useUserStore();
+const handleLoginOrRegister = async () => {
+  if (props.registerMode) {
+    await authStore.register({
+      email: email.value,
+      password: password.value,
+    });
+  } else {
+    await authStore.login({ email: email.value, password: password.value });
+  }
+  reset();
 };
 </script>
