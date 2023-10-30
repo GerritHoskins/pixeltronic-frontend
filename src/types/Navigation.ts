@@ -1,22 +1,26 @@
 interface NavigationRouterLink {
-  label: string;
   name: string;
-  isFooterNavItem: boolean;
-  isHeaderNavItem: boolean;
-  action?: () => void;
+  label: string;
+  contentTitle?: string;
+  isFooterNavItem?: boolean;
+  isHeaderNavItem?: boolean;
+  clickAction?: ClickAction;
 }
 
 interface NavigationRoute {
   name: string;
   path: string;
-  label: string;
   meta: {
     title: string;
     contentTitle: string;
-    clickAction?: {
-      action: () => Promise<void> | undefined;
-    };
+    footerNavigation: boolean;
+    headerNavigation: boolean;
+    clickAction?: ClickAction;
   };
 }
+
+export type ClickAction = {
+  action?: () => Promise<void>;
+};
 
 export type { NavigationRouterLink, NavigationRoute };

@@ -6,8 +6,12 @@ import Error404Page from '@/pages/Error404Page.vue';
 import { useUserStore } from '@/stores/user';
 
 const defaultMeta = {
+  requiresUnauth: false,
+  requiresAuth: false,
   headerNavigation: false,
   footerNavigation: false,
+  contentTitle: '',
+  clickAction: undefined,
 };
 
 const generateMeta = (layout: string, title: string, options = {}) => ({

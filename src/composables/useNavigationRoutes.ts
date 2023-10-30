@@ -1,32 +1,33 @@
 import { computed } from 'vue';
 import { allNavigationRoutes } from '@/router';
+import type { NavigationRouterLink } from '@/types/Navigation';
 
 const useNavigationRoutes = () => {
   const navItems = computed(() => {
     const items = {
-      header: [],
-      footer: [],
+      header: [] as NavigationRouterLink[],
+      footer: [] as NavigationRouterLink[],
     };
 
     allNavigationRoutes
+      .map(
+        route =>
+          ({
+            name: route.name || '',
+            label: route.meta?.title || route.name || '',
+            contentTitle: route.meta?.contentTitle || '',
+            isHeaderNavItem: route.meta?.headerNavigation || false,
+            isFooterNavItem: route.meta?.footerNavigation || false,
+            clickAction: route.meta?.clickAction || undefined,
+          }) as NavigationRouterLink
+      )
       .filter(route => {
-        if (route.meta?.headerNavigation) {
+        if (route.isHeaderNavItem) {
           return items.header.push(route);
         }
-        if (route.meta?.footerNavigation) {
+        if (route.isFooterNavItem) {
           return items.footer.push(route);
         }
-      })
-      .map(route => {
-        return {
-          name: route.name || '',
-          label: route.meta?.title || route.name || '',
-          clickAction: route.meta?.clickAction?.action
-            ? {
-                action: route.meta?.clickAction?.action || undefined,
-              }
-            : undefined,
-        };
       });
 
     items.header.reverse();

@@ -1,11 +1,22 @@
 <template>
   <div class="flex flex-col px-4 gap-4">
     <form class="flex flex-col gap-2" @submit.prevent="handleSubmit">
-      <input v-model.lazy="email" placeholder="Email" autocomplete="email" />
-      <validation-error v-if="!emailValidation && email !== ''">Please use an valid email.</validation-error>
+      <input
+        v-model.lazy="email"
+        placeholder="Email"
+        autocomplete="email"
+        :class="{ 'outline-red-500': !isValidEmail }"
+      />
+      <validation-error v-if="!isValidEmail">Please use an valid email.</validation-error>
 
-      <input type="password" v-model.lazy="password" autocomplete="current-password" placeholder="Password" />
-      <validation-error v-if="!passwordValidation.valid && passwordsFilled">
+      <input
+        type="password"
+        v-model.lazy="password"
+        :class="{ 'outline-red-500': !isValidPassword }"
+        autocomplete="current-password"
+        placeholder="Password"
+      />
+      <validation-error v-if="!isValidPassword">
         <p v-for="err in passwordValidation.errors" :key="err">
           {{ err }}
         </p></validation-error
@@ -17,10 +28,9 @@
         v-model.lazy="confirmPassword"
         autocomplete="new-password"
         placeholder="Confirm Password"
+        :class="{ 'outline-red-500': !isValidConfirmPassword }"
       />
-      <validation-error v-if="registerMode && passwordMismatch && passwordsFilled"
-        >Passwords do not match.</validation-error
-      >
+      <validation-error v-if="!isValidConfirmPassword">Passwords do not match.</validation-error>
     </form>
     <validation-error v-if="generalError">Something went wrong.</validation-error>
     <button
@@ -92,6 +102,19 @@ const passwordValidation = computed(() => {
 const emailValidation = computed(() => {
   const emailPattern = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/);
   return emailPattern.test(email.value);
+});
+
+const isValidEmail = computed(() => {
+  return emailValidation.value || email.value === '';
+});
+
+const isValidPassword = computed(() => {
+  return passwordValidation.value.valid || !passwordsFilled.value;
+});
+
+const isValidConfirmPassword = computed(() => {
+  if (!props.registerMode) return true;
+  return !passwordMismatch.value || !passwordsFilled.value;
 });
 
 const route = useRoute();

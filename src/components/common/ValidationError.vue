@@ -1,7 +1,6 @@
 <template>
-  <div class="animate-pulse-slow bg-red-600">
-    <div class="text-white py-2 px-4">
-      <div class="text-sm font-semibold mb-2">Hint:</div>
+  <div class="animate-pulse-slow bg-red-50 dark:bg-red-100">
+    <div class="text-red-500 py-2 px-4 dark:text-red-600">
       <div class="text-xs">
         <slot />
       </div>
