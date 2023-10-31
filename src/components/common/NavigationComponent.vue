@@ -11,7 +11,7 @@
         </router-link>
       </div>
       <button aria-label="Toggle Dark Mode" @click="toggleDarkMode">
-        <dark-mode-icon :svg-props="{ width: 20, height: 20 }" :is-toggled="toggleIcon" />
+        <dark-mode-icon :svg-props="{ width: 28, height: 28 }" :is-toggled="toggleIcon" />
       </button>
       <mobile-menu :items="navItems" />
     </div>

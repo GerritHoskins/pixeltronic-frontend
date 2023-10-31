@@ -1,27 +1,17 @@
 <template>
-  <div ref="menu">
+  <div>
     <button aria-label="Toggle Menu" class="sm:hidden" @click="toggleOverlayMenu">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        class="h-8 w-8 text-gray-900 dark:text-gray-100"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-          clip-rule="evenodd"
-        ></path>
-      </svg>
+      <menu-icon :svg-props="{ height: 32, width: 32 }" />
     </button>
-
     <div
+      ref="menu"
       :class="isToggled ? 'translate-x-0' : 'translate-x-full'"
       class="fixed !ml-[50%] sm:!ml-[inherit] left-0 top-0 z-10 h-full w-full transform bg-white opacity-95 duration-300 ease-in-out dark:bg-gray-950 dark:opacity-[0.98]"
     >
       <nav class="fixed mt-8 h-full">
         <div class="px-12 py-4" v-for="navItem in items" :key="navItem.name">
           <router-link
+            :title="navItem.name"
             class="text-2xl text-gray-900 dark:text-gray-100"
             :to="{ name: navItem.name }"
             :aria-label="`Navigate to ${navItem.contentTitle}`"
@@ -39,6 +29,7 @@ import type { NavigationRouterLink } from '@/types/Navigation';
 import { onClickOutside } from '@vueuse/core';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import MenuIcon from '@/components/common/icons/MenuIcon.vue';
 
 defineProps<{
   items: NavigationRouterLink[];
@@ -51,6 +42,7 @@ const toggleOverlayMenu = () => {
 
 const menu = ref(null);
 onClickOutside(menu, event => {
+  if (!isToggled.value) return;
   console.log(event);
   toggleOverlayMenu();
 });
