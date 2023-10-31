@@ -85,6 +85,16 @@ const navigationRoutes = [
     }),
   },
   {
+    path: '/tags',
+    name: 'tags',
+    component: () => import('@/pages/TagsPage.vue'),
+    meta: generateMeta('AuthenticatedLayout', 'Tags', {
+      contentTitle: 'Find more to a given topic',
+      requiresAuth: true,
+      headerNavigation: true,
+    }),
+  },
+  {
     path: '/privacy-policy',
     name: 'privacy-policy',
     component: () => import('@/pages/PrivacyPolicyPage.vue'),

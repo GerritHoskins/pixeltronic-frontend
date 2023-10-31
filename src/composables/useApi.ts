@@ -2,8 +2,8 @@ import { ref } from 'vue';
 import axiosInstance from '@/api/axiosInstance';
 
 const useApi = () => {
-  const data = ref(null);
-  const error = ref(null);
+  const data = ref<Record<string, Array<{ attributes: { name: string; articles: { data: [] } } }>>>({});
+  const error = ref(null as unknown);
   const loading = ref(false);
 
   const fetchProjects = async () => await fetch('projects');
