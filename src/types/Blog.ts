@@ -1,4 +1,6 @@
 type BlogEntry = {
+  id: number;
+  slug: string;
   publishedOn: string;
   title: string;
   tags: Tag[];

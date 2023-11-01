@@ -67,13 +67,24 @@ const navigationRoutes = [
   },
   {
     path: '/blog',
-    name: 'blog',
     component: () => import('@/pages/BlogPage.vue'),
     meta: generateMeta('AuthenticatedLayout', 'Blog', {
       contentTitle: 'Interesting reads',
       requiresAuth: true,
       headerNavigation: true,
     }),
+    children: [
+      {
+        path: '',
+        name: 'blog',
+        component: () => import('@/components/blog/BlogEntries.vue'),
+      },
+      {
+        path: ':id',
+        name: 'entry',
+        component: () => import('@/components/blog/BlogEntry.vue'),
+      },
+    ],
   },
   {
     path: '/project',

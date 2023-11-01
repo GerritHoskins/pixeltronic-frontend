@@ -12,7 +12,9 @@
           <div class="space-y-3">
             <div>
               <h2 class="text-2xl font-bold leading-8 tracking-tight">
-                <a class="text-gray-900 dark:text-gray-100" href="#">{{ entry.title }}</a>
+                <router-link class="text-gray-900 dark:text-gray-100" :to="{ path: `/blog/${entry.slug}` }">{{
+                  entry.title
+                }}</router-link>
               </h2>
               <div class="flex flex-wrap">
                 <a
@@ -32,14 +34,24 @@
       </li>
     </ul>
   </div>
+  <div
+    class="hidden blog-tags h-full max-h-screen min-w-[280px] max-w-[280px] flex-wrap overflow-auto rounded bg-gray-50 pt-5 shadow-md dark:bg-gray-900/70 dark:shadow-gray-800/40 sm:flex"
+  >
+    <div class="px-6 py-4">
+      <blog-tags :tags="countedTags" :title="'All Posts'" show-count />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { formatTimeAgo } from '@vueuse/core';
-import type { BlogEntry } from '@/types/Blog';
-defineProps<{
-  entries: BlogEntry[];
-}>();
+import type { BlogEntry, Tag } from '@/types/Blog';
+import useBlogStore from '@/stores/blog';
+import { computed } from 'vue';
+import BlogTags from '@/components/blog/BlogTags.vue';
 
+const blogStore = useBlogStore();
+const entries = computed<BlogEntry[]>(() => blogStore.blogEntries || []);
+const countedTags = computed<Tag[]>(() => blogStore.tags || []);
 const timeAgo = (timestamp: string) => formatTimeAgo(new Date(timestamp)); // string
 </script>

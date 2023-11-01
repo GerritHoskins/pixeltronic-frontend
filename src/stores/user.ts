@@ -68,7 +68,7 @@ export const useUserStore = defineStore({
       }
     },
 
-    updateStateFromResponse(response: Record<string, unknown>) {
+    updateStateFromResponse(response: { data: { user: UserDetails; token: string } }) {
       this.user = response.data?.user;
       this.jwt = response.data?.token;
     },

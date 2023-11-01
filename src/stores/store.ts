@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { usePreferredDark } from '@vueuse/core';
+import useBlogStore from '@/stores/blog';
 
 const useStore = defineStore('store', {
   state: () => ({
@@ -14,9 +15,11 @@ const useStore = defineStore('store', {
       if (htmlRootEl && this.prefersDarkMode) htmlRootEl.classList.add('dark');
 
       const userStore = useUserStore();
+      const blogStore = useBlogStore();
 
       try {
         await userStore.syncUser();
+        await blogStore.initialize();
 
         this.initialized = true;
       } catch (error) {
