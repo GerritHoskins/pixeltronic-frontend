@@ -19,7 +19,13 @@
       </div>
 
       <div class="mb-1 flex space-x-2 text-gray-500 dark:text-gray-400 text-xs">
-        <a target="_blank" rel="noopener noreferrer" href="https://pixeltronic.dev">©2023</a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          title="pixeltronic.dev - copyright 2023"
+          href="https://pixeltronic.dev"
+          >pixeltronic.dev ©2023</a
+        >
       </div>
     </div>
   </footer>

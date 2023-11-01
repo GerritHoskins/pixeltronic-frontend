@@ -7,11 +7,13 @@ const useNavigationRoutes = () => {
     name: route.name || '',
     label: route.meta?.title || route.name || '',
     contentTitle: route.meta?.contentTitle || '',
+    exclude: route.meta?.exclude || false,
     isHeaderNavItem: route.meta?.headerNavigation || false,
     isFooterNavItem: route.meta?.footerNavigation || false,
     clickAction: route.meta?.clickAction || undefined,
   });
 
+  const exclude = (item: NavigationRouterLink) => !item.exclude;
   const isHeaderNavItem = (item: NavigationRouterLink) => item.isHeaderNavItem;
   const isFooterNavItem = (item: NavigationRouterLink) => item.isFooterNavItem;
 
@@ -24,7 +26,7 @@ const useNavigationRoutes = () => {
       footer: [],
     };
 
-    const mappedItems = allNavigationRoutes.map(mapRouteToNavItem);
+    const mappedItems = allNavigationRoutes.map(mapRouteToNavItem).filter(exclude);
 
     items.header = mappedItems.filter(isHeaderNavItem).reverse();
     items.footer = mappedItems.filter(isFooterNavItem);

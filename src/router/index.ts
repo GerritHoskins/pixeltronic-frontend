@@ -8,6 +8,7 @@ import { useUserStore } from '@/stores/user';
 const defaultMeta = {
   requiresUnauth: false,
   requiresAuth: false,
+  exclude: false,
   headerNavigation: false,
   footerNavigation: false,
   contentTitle: '',
@@ -79,6 +80,8 @@ const navigationRoutes = [
     name: 'project',
     component: () => import('@/pages/ProjectPage.vue'),
     meta: generateMeta('AuthenticatedLayout', 'Projects', {
+      exclude: true,
+
       contentTitle: 'My little creations',
       requiresAuth: true,
       headerNavigation: true,
@@ -99,6 +102,8 @@ const navigationRoutes = [
     name: 'privacy-policy',
     component: () => import('@/pages/PrivacyPolicyPage.vue'),
     meta: generateMeta('AuthenticatedLayout', 'Privacy Policy', {
+      exclude: true,
+
       contentTitle: 'Privacy Policy',
       requiresAuth: false,
       footerNavigation: true,
@@ -109,6 +114,8 @@ const navigationRoutes = [
     name: 'terms-of-use',
     component: () => import('@/pages/TermsOfUsePage.vue'),
     meta: generateMeta('AuthenticatedLayout', 'Terms of Use', {
+      exclude: true,
+
       contentTitle: 'Terms of Use',
       requiresAuth: false,
       footerNavigation: true,
