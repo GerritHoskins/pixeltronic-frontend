@@ -1,8 +1,30 @@
 import { ref } from 'vue';
 import axiosInstance from '@/api/axiosInstance';
 
+export type ArticleResponse = {
+  data: {
+    attributes: {
+      aid: number;
+      title: string;
+      publishedAt: string;
+      description: string;
+      tags: { data: Array<{ attributes: { name: string } }> };
+      image: { data: { attributes: { url: string } } };
+    };
+  }[];
+};
+
+export type TagResponse = {
+  data: {
+    attributes: {
+      name: string;
+      articles: { data: Array<{ attributes: { name: string } }> };
+    };
+  }[];
+};
+
 const useApi = () => {
-  const data = ref<Record<string, Array<{ attributes: { name: string; articles: { data: [] } } }>>>({});
+  const data = ref<ArticleResponse | TagResponse>();
   const error = ref(null as unknown);
   const loading = ref(false);
 

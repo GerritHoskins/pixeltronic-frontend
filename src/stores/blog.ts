@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { BlogEntry, Tag } from '@/types/Blog';
 import useApi from '@/composables/useApi';
+import type { ArticleResponse, TagResponse } from '@/composables/useApi';
 import { watch } from 'vue';
 import useSlugger from '@/composables/useSlugger';
 
@@ -17,13 +18,16 @@ const useBlogStore = defineStore('blog', {
 
       const { slugger } = useSlugger();
       watch(blogPosts, newVal => {
-        newVal?.data.forEach(entry => {
+        (newVal as ArticleResponse)?.data.forEach(entry => {
           this.blogEntries.push({
             id: entry.attributes.aid,
             slug: slugger(entry.attributes.title),
             publishedOn: entry.attributes.publishedAt,
             title: entry.attributes.title,
-            tags: entry.attributes.tags.data.map(tag => ({ label: tag.attributes.name })),
+            tags: entry.attributes.tags.data.map(tag => ({
+              label: tag.attributes.name,
+              count: entry.attributes.tags.data.length,
+            })),
             description: entry.attributes.description,
             image: entry.attributes.image?.data?.attributes?.url,
           });
@@ -31,7 +35,7 @@ const useBlogStore = defineStore('blog', {
       });
 
       watch(tags, newVal => {
-        newVal?.data.forEach(tag => {
+        (newVal as TagResponse)?.data.forEach(tag => {
           this.tags.push({
             label: tag.attributes.name,
             count: tag.attributes?.articles?.data?.length,
