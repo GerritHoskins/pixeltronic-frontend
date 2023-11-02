@@ -13,4 +13,11 @@ type Tag = {
   count: number;
 };
 
-export type { BlogEntry, Tag };
+type BlogPagination = {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  total: number;
+};
+
+export type { BlogEntry, Tag, BlogPagination };

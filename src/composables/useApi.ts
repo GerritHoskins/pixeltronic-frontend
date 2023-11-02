@@ -1,30 +1,40 @@
 import { ref } from 'vue';
 import axiosInstance from '@/api/axiosInstance';
 
+export interface ApiResponse {
+  data: Array<ArticleResponse> | Array<TagResponse>;
+  meta: MetaResponse;
+}
+
 export type ArticleResponse = {
-  data: {
-    attributes: {
-      aid: number;
-      title: string;
-      publishedAt: string;
-      description: string;
-      tags: { data: Array<{ attributes: { name: string } }> };
-      image: { data: { attributes: { url: string } } };
-    };
-  }[];
+  attributes: {
+    aid: number;
+    title: string;
+    publishedAt: string;
+    description: string;
+    tags: { data: Array<{ attributes: { name: string } }> };
+    image: { data: { attributes: { url: string } } };
+  };
 };
 
 export type TagResponse = {
-  data: {
-    attributes: {
-      name: string;
-      articles: { data: Array<{ attributes: { name: string } }> };
-    };
-  }[];
+  attributes: {
+    name: string;
+    articles: { data: Array<{ attributes: { name: string } }> };
+  };
+};
+
+export type MetaResponse = {
+  pagination: {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
+  };
 };
 
 const useApi = () => {
-  const data = ref<ArticleResponse | TagResponse>();
+  const data = ref<ApiResponse>();
   const error = ref(null as unknown);
   const loading = ref(false);
 

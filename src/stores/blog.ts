@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia';
-import type { BlogEntry, Tag } from '@/types/Blog';
+import type { BlogEntry, Tag, BlogPagination } from '@/types/Blog';
 import useApi from '@/composables/useApi';
-import type { ArticleResponse, TagResponse } from '@/composables/useApi';
+import type { ArticleResponse, TagResponse, MetaResponse } from '@/composables/useApi';
 import { watch } from 'vue';
 import useSlugger from '@/composables/useSlugger';
 
 const useBlogStore = defineStore('blog', {
   state: () => ({
     blogEntries: [] as BlogEntry[],
+    blogPagination: {} as BlogPagination,
     tags: [] as Tag[],
   }),
 
@@ -18,7 +19,8 @@ const useBlogStore = defineStore('blog', {
 
       const { slugger } = useSlugger();
       watch(blogPosts, newVal => {
-        (newVal as ArticleResponse)?.data.forEach(entry => {
+        this.blogPagination = (newVal?.meta as MetaResponse).pagination as BlogPagination;
+        (newVal?.data as ArticleResponse[]).forEach(entry => {
           this.blogEntries.push({
             id: entry.attributes.aid,
             slug: slugger(entry.attributes.title),
@@ -35,7 +37,7 @@ const useBlogStore = defineStore('blog', {
       });
 
       watch(tags, newVal => {
-        (newVal as TagResponse)?.data.forEach(tag => {
+        (newVal?.data as TagResponse[]).forEach(tag => {
           this.tags.push({
             label: tag.attributes.name,
             count: tag.attributes?.articles?.data?.length,
