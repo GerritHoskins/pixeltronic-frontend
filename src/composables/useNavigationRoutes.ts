@@ -3,35 +3,44 @@ import { allNavigationRoutes } from '@/router';
 import type { NavigationRouterLink } from '@/types/Navigation';
 
 const useNavigationRoutes = () => {
-  const mapRouteToNavItem = (route: (typeof allNavigationRoutes)[0]): NavigationRouterLink => ({
-    name: route.name || '',
-    label: route.meta?.title || route.name || '',
-    contentTitle: route.meta?.contentTitle || '',
-    exclude: route.meta?.exclude || false,
-    isHeaderNavItem: route.meta?.headerNavigation || false,
-    isFooterNavItem: route.meta?.footerNavigation || false,
-    clickAction: route.meta?.clickAction || undefined,
-  });
+  const navItemCache = new Map();
 
-  const exclude = (item: NavigationRouterLink) => !item.exclude;
-  const isHeaderNavItem = (item: NavigationRouterLink) => item.isHeaderNavItem;
-  const isFooterNavItem = (item: NavigationRouterLink) => item.isFooterNavItem;
+  const mapRouteToNavItem = (route: (typeof allNavigationRoutes)[0]) => {
+    const cacheKey = route.path;
+    if (navItemCache.has(cacheKey)) {
+      return navItemCache.get(cacheKey);
+    }
 
-  const navItems = computed(() => {
-    const items: {
-      header: NavigationRouterLink[];
-      footer: NavigationRouterLink[];
-    } = {
-      header: [],
-      footer: [],
+    const navItem: NavigationRouterLink = {
+      name: route.name || route.children?.[0]?.name || '',
+      label: route.meta?.title || route.name || '',
+      contentTitle: route.meta?.contentTitle || '',
+      exclude: route.meta?.exclude || false,
+      isHeaderNavItem: route.meta?.headerNavigation || false,
+      isFooterNavItem: route.meta?.footerNavigation || false,
+      clickAction: route.meta?.clickAction || undefined,
     };
 
-    const mappedItems = allNavigationRoutes.map(mapRouteToNavItem).filter(exclude);
+    navItemCache.set(cacheKey, navItem);
+    return navItem;
+  };
 
-    items.header = mappedItems.filter(isHeaderNavItem).reverse();
-    items.footer = mappedItems.filter(isFooterNavItem);
+  const navItems = computed(() => {
+    const headerItems: NavigationRouterLink[] = [];
+    const footerItems: NavigationRouterLink[] = [];
 
-    return items;
+    for (const route of allNavigationRoutes) {
+      const item = mapRouteToNavItem(route);
+      if (item.exclude) continue;
+      if (item.isHeaderNavItem) headerItems.push(item);
+      if (item.isFooterNavItem) footerItems.push(item);
+    }
+
+    // Reverse header items if needed
+    return {
+      header: headerItems.reverse(),
+      footer: footerItems,
+    };
   });
 
   return {

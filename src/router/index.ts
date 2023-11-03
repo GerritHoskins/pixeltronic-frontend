@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router';
 import useStore from '@/stores/store';
 import { Preferences } from '@capacitor/preferences';
@@ -55,15 +55,21 @@ const navigationRoutes = [
     component: () => import('@/pages/LoginRegisterPage.vue'),
     meta: generateMeta('DefaultLayout', 'Logout', {
       contentTitle: 'Logout',
-      requiresUnauth: true,
+      requiresUnauth: false,
       headerNavigation: true,
-      clickAction: {
-        action: async () => {
-          const store = useUserStore();
-          await store.logout();
-        },
-      },
     }),
+    beforeEnter: async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+      const store = useUserStore();
+      await store.logout();
+
+      try {
+        await store.logoutSupabase();
+        next('/login');
+      } catch (e) {
+        console.error('Error logging out supabase:', e);
+        next('/login');
+      }
+    },
   },
   {
     path: '/blog',

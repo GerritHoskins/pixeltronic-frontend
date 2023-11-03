@@ -6,7 +6,7 @@
         <div class="cursor-pointer" v-if="navItem.clickAction?.action" @click="navItem.clickAction.action">
           {{ navItem.label }}
         </div>
-        <router-link v-else :to="{ name: navItem.name }" :aria-label="`Navigate to ${navItem.contentTitle}`">
+        <router-link v-else :to="{ path: `/${navItem.name}` }" :aria-label="`Navigate to ${navItem.contentTitle}`">
           {{ navItem.label }}
         </router-link>
       </div>
