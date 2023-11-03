@@ -1,55 +1,62 @@
 import { defineStore } from 'pinia';
 import type { BlogEntry, Tag, BlogPagination } from '@/types/Blog';
 import useApi from '@/composables/useApi';
-import type { ArticleResponse, TagResponse, MetaResponse } from '@/composables/useApi';
-import { watch } from 'vue';
+import type { ArticleResponse, TagResponse } from '@/composables/useApi';
+import { ref, watch } from 'vue';
 import useSlugger from '@/composables/useSlugger';
 
 const useBlogStore = defineStore('blog', {
   state: () => ({
-    blogEntries: [] as BlogEntry[],
-    blogPagination: {} as BlogPagination,
-    tags: [] as Tag[],
+    blogEntries: ref<BlogEntry[]>([]),
+    blogPagination: ref<BlogPagination>({ start: 0, limit: 3, total: 0 }),
+    tags: ref<Tag[]>([]),
   }),
 
   actions: {
     async initialize() {
+      const [tagPromise, entryPromise] = [this.fetchTags(), this.fetchBlogEntries({ start: 1, limit: 3 })];
+      await Promise.allSettled([tagPromise, entryPromise]);
+    },
+
+    async fetchBlogEntries(pagination?: { start: number; limit: number }) {
       const { data: blogPosts, fetchBlogPosts } = useApi();
-      const { data: tags, fetchTags } = useApi();
 
       const { slugger } = useSlugger();
       watch(blogPosts, newVal => {
-        this.blogPagination = (newVal?.meta as MetaResponse).pagination as BlogPagination;
-        (newVal?.data as ArticleResponse[]).forEach(entry => {
-          this.blogEntries.push({
-            id: entry.attributes.aid,
-            slug: slugger(entry.attributes.title),
-            publishedOn: entry.attributes.publishedAt,
-            title: entry.attributes.title,
-            tags: entry.attributes.tags.data.map(tag => ({
-              label: tag.attributes.name,
-              count: entry.attributes.tags.data.length,
-            })),
-            description: entry.attributes.description,
-            image: entry.attributes.image?.data?.attributes?.url,
-          });
-        });
+        const blogEntries = (newVal?.data as ArticleResponse[]).map(entry => ({
+          id: entry.attributes.aid,
+          slug: slugger(entry.attributes.title),
+          publishedOn: entry.attributes.publishedAt,
+          title: entry.attributes.title,
+          tags: entry.attributes.tags.data.map(tag => ({
+            label: tag.attributes.name,
+            count: entry.attributes.tags.data.length,
+          })),
+          description: entry.attributes.description,
+          image: entry.attributes.image?.data?.attributes?.url,
+        }));
+
+        const { total: ptotal, limit: plimit } = newVal.meta.pagination;
+        this.blogPagination.total = ptotal;
+        this.blogPagination.limit = plimit || limit;
+
+        this.blogEntries = [];
+        this.blogEntries.push(...blogEntries);
       });
+      await fetchBlogPosts(pagination);
+    },
+
+    async fetchTags() {
+      const { data: tags, fetchTags } = useApi();
 
       watch(tags, newVal => {
-        (newVal?.data as TagResponse[]).forEach(tag => {
-          this.tags.push({
-            label: tag.attributes.name,
-            count: tag.attributes?.articles?.data?.length,
-          });
-        });
+        this.tags = (newVal?.data as TagResponse[]).map(tag => ({
+          label: tag.attributes.name,
+          count: tag.attributes?.articles?.data?.length,
+        }));
       });
 
-      try {
-        await Promise.all([fetchTags(), fetchBlogPosts()]);
-      } catch (error) {
-        console.error('Initialization failed: ', error);
-      }
+      await fetchTags();
     },
   },
 

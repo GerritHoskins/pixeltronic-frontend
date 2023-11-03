@@ -14,9 +14,8 @@ type Tag = {
 };
 
 type BlogPagination = {
-  page: number;
-  pageSize: number;
-  pageCount: number;
+  start: number;
+  limit: number;
   total: number;
 };
 

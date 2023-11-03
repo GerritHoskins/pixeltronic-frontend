@@ -84,6 +84,14 @@ const navigationRoutes = [
         path: '',
         name: 'blog',
         component: () => import('@/components/blog/BlogEntries.vue'),
+        children: [
+          {
+            path: '/page/:page',
+            name: 'blog-page',
+            props: true,
+            component: () => import('@/components/blog/BlogEntries.vue'),
+          },
+        ],
       },
       {
         path: ':id',

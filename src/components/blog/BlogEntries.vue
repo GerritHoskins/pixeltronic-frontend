@@ -34,12 +34,7 @@
       </li>
     </ul>
 
-    <pagination-component
-      :total-items="pageCount"
-      v-model:current-page="page"
-      :page-size="pageSize"
-      @update:currentPage="updateCurrentPage"
-    />
+    <pagination-component />
   </div>
   <div
     class="hidden blog-tags h-full max-h-screen min-w-[280px] max-w-[280px] flex-wrap overflow-auto rounded bg-gray-50 pt-5 shadow-md dark:bg-gray-900/70 dark:shadow-gray-800/40 sm:flex"
@@ -54,19 +49,13 @@
 import { formatTimeAgo } from '@vueuse/core';
 import type { BlogEntry, Tag } from '@/types/Blog';
 import useBlogStore from '@/stores/blog';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import BlogTags from '@/components/blog/BlogTags.vue';
 import PaginationComponent from '@/components/common/PaginationComponent.vue';
 
 const blogStore = useBlogStore();
 const entries = computed<BlogEntry[]>(() => blogStore.blogEntries || []);
 const countedTags = computed<Tag[]>(() => blogStore.tags || []);
-const { page, pageCount, pageSize } = blogStore.blogPagination;
-const timeAgo = (timestamp: string) => formatTimeAgo(new Date(timestamp));
 
-const currentPage = ref(1);
-const updateCurrentPage = (page: number) => {
-  currentPage.value = page;
-  // fetch new data based on the current page
-};
+const timeAgo = (timestamp: string) => formatTimeAgo(new Date(timestamp));
 </script>

@@ -26,9 +26,8 @@ export type TagResponse = {
 
 export type MetaResponse = {
   pagination: {
-    page: number;
-    pageSize: number;
-    pageCount: number;
+    start: number;
+    limit: number;
     total: number;
   };
 };
@@ -39,15 +38,21 @@ const useApi = () => {
   const loading = ref(false);
 
   const fetchProjects = async () => await fetch('projects');
-  const fetchBlogPosts = async () => await fetch('articles');
+  const fetchBlogPosts = async (pagination?: { start: number; limit: number }) =>
+    await fetch(
+      'articles',
+      pagination ? `pagination[start]=${pagination.start}&pagination[limit]=${pagination.limit}` : ''
+    );
   const fetchTags = async () => await fetch('tags');
 
-  const fetch = async (endpoint: string) => {
+  const fetch = async (endpoint: string, filter?: string) => {
     loading.value = true;
     error.value = null;
 
     try {
-      const response = await axiosInstance.get(`/strapi/api/${endpoint}?populate=*`);
+      const response = await axiosInstance.get(
+        filter ? `/strapi/api/${endpoint}?${filter}&populate=*` : `/strapi/api/${endpoint}?populate=*`
+      );
       data.value = response.data;
     } catch (err) {
       error.value = err;
