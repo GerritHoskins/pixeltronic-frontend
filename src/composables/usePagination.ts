@@ -1,4 +1,5 @@
 import { useRoute } from 'vue-router';
+import type { RouteLocationRaw } from 'vue-router';
 import { computed, watchEffect } from 'vue';
 import useBlogStore from '@/stores/blog';
 
@@ -31,11 +32,15 @@ export default function usePagination() {
   const hasNextPage = computed(() => currentPage.value < totalPages.value);
 
   const previousPageUrl = computed(() => {
-    return hasPreviousPage.value ? { name: 'blog-page', params: { page: currentPage.value - 1 } } : undefined;
+    return hasPreviousPage.value
+      ? { name: 'blog-page', params: { page: currentPage.value - 1 } }
+      : ({} as unknown as RouteLocationRaw);
   });
 
   const nextPageUrl = computed(() => {
-    return hasNextPage.value ? { name: 'blog-page', params: { page: currentPage.value + 1 } } : undefined;
+    return hasNextPage.value
+      ? { name: 'blog-page', params: { page: currentPage.value + 1 } }
+      : ({} as unknown as RouteLocationRaw);
   });
 
   return {

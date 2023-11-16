@@ -36,9 +36,9 @@ const useBlogStore = defineStore('blog', {
           image: entry.attributes.image?.data?.attributes?.url,
         }));
 
-        const { total: ptotal, limit: plimit } = newVal.meta.pagination;
+        const { total: ptotal, limit: plimit } = newVal?.meta.pagination ?? this.blogPagination;
         this.blogPagination.total = ptotal;
-        this.blogPagination.limit = plimit || limit;
+        this.blogPagination.limit = plimit;
 
         this.blogEntries = [];
         this.blogEntries.push(...blogEntries);

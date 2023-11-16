@@ -17,6 +17,7 @@
 
 <script setup lang="ts">
 import useApi from '@/composables/useApi';
+import type { TagResponse } from '@/composables/useApi';
 import { onMounted, reactive, watch } from 'vue';
 import type { Tag as TagItem } from '@/types/Blog';
 import Tag from '@/components/tags/TagComponent.vue';
@@ -28,8 +29,8 @@ const tags = reactive<TagItem[]>([]);
 watch(data, newVal => {
   newVal?.data.forEach(tag => {
     tags.push({
-      label: tag.attributes.name,
-      count: tag.attributes?.articles?.data?.length,
+      label: (tag as TagResponse).attributes.name,
+      count: (tag as TagResponse).attributes?.articles?.data?.length,
     });
   });
 });

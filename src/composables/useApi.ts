@@ -38,6 +38,7 @@ const useApi = () => {
   const loading = ref(false);
 
   const fetchProjects = async () => await fetch('projects');
+
   const fetchBlogPosts = async (pagination?: { start: number; limit: number }) =>
     await fetch(
       'articles',
